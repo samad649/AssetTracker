@@ -1,3 +1,4 @@
+using Going.Plaid;
 //
 var builder = WebApplication.CreateBuilder(args);
 // Enable API Explorer
@@ -6,8 +7,25 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Enable controllers
 builder.Services.AddControllers();
+
+//define the Plaid Client to interact with API
+builder.Services.Configure<PlaidOptions>(options =>
+{
+    options.ClientId = "68a735bba518710022d72c7b";
+    options.Secret = "8dfb697ad37bd5487ef904f7ccd1c9";
+    options.Environment = Going.Plaid.Environment.Sandbox;
+});
+
+builder.Services.AddSingleton<PlaidClient>();
 // Build the app
 var app = builder.Build();
+
+app.UseCors(builder =>
+    builder
+        .WithOrigins("http://localhost:4200") // Angular dev server
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -16,7 +34,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 // Maps HTTP requests to HTTPS
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 // Allows use of authorization for endpoints
 app.UseAuthorization();
 // Map controller routes
