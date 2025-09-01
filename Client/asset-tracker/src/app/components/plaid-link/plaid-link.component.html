@@ -1,0 +1,8 @@
+<div class="plaid-link-container">
+    <button class="plaid-link-button" (click)="initializePlaidLink()">
+        Test API Connection
+    </button>
+    <div *ngIf="response" class="response">
+        <pre>{{ response | json }}</pre>
+    </div>
+</div>
