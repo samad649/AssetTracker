@@ -11,8 +11,8 @@ builder.Services.AddControllers();
 //define the Plaid Client to interact with API
 builder.Services.Configure<PlaidOptions>(options =>
 {
-    options.ClientId = "68a735bba518710022d72c7b";
-    options.Secret = "8dfb697ad37bd5487ef904f7ccd1c9";
+    options.ClientId = "#";
+    options.Secret = "#";
     options.Environment = Going.Plaid.Environment.Sandbox;
 });
 
