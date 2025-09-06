@@ -13,4 +13,8 @@ export class PlaidService {
   createLinkToken(): Observable<any> {
     return this.http.get<any>(this.apiUrl);
   }
+
+  sendPublicToken(publicToken: string): Observable<any> {
+  return this.http.post<any>('http://localhost:5235/PlaidLinkToken/exchange', { public_token: publicToken });
+}
 }
