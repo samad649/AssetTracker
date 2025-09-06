@@ -1,4 +1,6 @@
+using DotNetEnv;
 using Going.Plaid;
+Env.Load();
 //
 var builder = WebApplication.CreateBuilder(args);
 // Enable API Explorer
@@ -11,8 +13,8 @@ builder.Services.AddControllers();
 //define the Plaid Client to interact with API
 builder.Services.Configure<PlaidOptions>(options =>
 {
-    options.ClientId = "#";
-    options.Secret = "#";
+    options.ClientId =  Env.GetString("PLAID_CLIENT_ID") ?? "";
+    options.Secret = Env.GetString("PLAID_SECRET") ?? "";
     options.Environment = Going.Plaid.Environment.Sandbox;
 });
 
