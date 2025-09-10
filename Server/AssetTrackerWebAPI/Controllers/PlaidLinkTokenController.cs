@@ -18,7 +18,7 @@ namespace AssetTrackerWebAPI.Controllers
             Env.Load();
             _plaidClient = plaidClient;
         }
-
+        //TODO: MOVE LOGIC TO A SERVICE
         [HttpGet("create")]
         public async Task<IActionResult> CreateLinkToken()
         {
@@ -43,6 +43,7 @@ namespace AssetTrackerWebAPI.Controllers
 
 
         }
+        //TODO: MOVE LOGIC TO A SERVICE
         [HttpPost("exchange")]
         public async Task<IActionResult> ExchangePublicToken([FromBody] PublicToken data)
         {
