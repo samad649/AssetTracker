@@ -11,16 +11,24 @@ namespace AssetTrackerWebAPI.Services
         {
             _plaidClient = plaidClient;
         }
-        public 
         //fetch and store access token and item id from database
-        //get transactions using access token
+        
         //store transactions in database
-        //get bank info and balances using access token
         public string getAccessToken(string itemId)
         {
             //fetch access token from database
             return "access_token";
         }
-
+        //get transactions using access token
+        public getTransactionData(string accessToken, DateTime startDate, DateTime endDate)
+        { }
+        //get bank info and balances using access token
+        public getBankInfoAndBalances(string accessToken)
+        { }
+        //get identity info using access token
+        public getIdentityInfo(string accessToken)
+        { }
+        
+            
     }
 }
