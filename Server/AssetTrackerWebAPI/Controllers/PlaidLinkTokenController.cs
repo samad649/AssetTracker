@@ -41,7 +41,6 @@ namespace AssetTrackerWebAPI.Controllers
                 return BadRequest(new { error = "Client ID is not set." });
             }
 
-
         }
         //TODO: MOVE LOGIC TO A SERVICE
         [HttpPost("exchange")]
