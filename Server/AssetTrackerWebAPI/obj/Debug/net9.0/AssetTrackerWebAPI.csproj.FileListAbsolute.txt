@@ -52,3 +52,4 @@
 /Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.Extensions.Primitives.dll
 /Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/DotNetEnv.dll
 /Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Sprache.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/AWSSDK.Extensions.NETCore.Setup.dll
