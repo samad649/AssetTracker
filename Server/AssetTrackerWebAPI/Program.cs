@@ -1,7 +1,7 @@
 using DotNetEnv;
 using Going.Plaid;
 using Amazon.DynamoDBv2;
-
+using AssetTrackerWebAPI.Services;
 Env.Load();
 // Create a builder for the web application
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 //define AWS DynamoDB service
 builder.Services.AddAWSService<IAmazonDynamoDB>();
+builder.Services.AddScoped<ProfileService>(); // <-- THIS IS REQUIRED
 //define the Plaid Client to interact with API
 builder.Services.Configure<PlaidOptions>(options =>
 {

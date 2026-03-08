@@ -1,2 +1,10 @@
 <p>login works!</p>
- <button matButton>Basic</button>
+ <button matButton (click)="onClick()">Basic</button>
+ <div *ngIf="showData">
+ <p>{{ profileData.name }}</p>
+    <ul>
+    <li *ngFor="let account of profileData?.accounts">
+        {{ account.institution }} - {{ account.balance }}
+    </li>
+    </ul>
+ </div>
