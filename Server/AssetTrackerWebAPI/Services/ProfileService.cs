@@ -1,9 +1,14 @@
-using AssetTrackerWebAPI.Models;
-
+using Amazon.DynamoDBv2.DataModel;
 namespace AssetTrackerWebAPI.Services
 {
     public class ProfileService
     {
+        private readonly IDynamoDBContext _dynamoDBContext;
+
+        public ProfileService(IDynamoDBContext dynamoDBContext)
+        {
+            _dynamoDBContext = dynamoDBContext;
+        }
         public Profile CreateProfile()
         {
             var account1 = new Account();
@@ -18,9 +23,15 @@ namespace AssetTrackerWebAPI.Services
             accounts.Add(account1);
             accounts.Add(account2);
             Profile profile = new Profile();
-            profile.name = "Samee";
+            profile.firstName = "Samee";
+            profile.lastName = "Prasla";
             profile.accounts = accounts;
             return profile;
+        }
+        public async Task<Account> CreateAccountAsync(Account account)
+        {
+            await _dynamoDBContext.SaveAsync(account);
+            return account;
         }
     }
 }
