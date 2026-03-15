@@ -24,5 +24,11 @@ namespace AssetTrackerWebAPI.Controllers
             var profile = _profileService.CreateProfile();
             return Ok(profile);
         }
+        [HttpPost("CreateAccount")]
+        public async Task<ActionResult<Account>> CreateAccount([FromBody] Account account)
+        {
+            var createdAccount = await _profileService.CreateAccountAsync(account);
+            return Ok(createdAccount);
+        }
     }
 }

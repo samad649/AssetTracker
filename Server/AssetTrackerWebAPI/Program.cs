@@ -1,8 +1,19 @@
 using DotNetEnv;
 using Going.Plaid;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using AssetTrackerWebAPI.Services;
-Env.Load();
+
+
+
+var dynamoConfig = new AmazonDynamoDBConfig
+{
+    ServiceURL = "http://localhost:8000",
+    AuthenticationRegion = "us-east-1"
+};
+
+var dynamoClient = new AmazonDynamoDBClient("dummy", "dummy", dynamoConfig);
+
 // Create a builder for the web application
 var builder = WebApplication.CreateBuilder(args);
 // Enable API Explorer
@@ -11,20 +22,25 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Enable controllers
 builder.Services.AddControllers();
-//define AWS DynamoDB service
-builder.Services.AddAWSService<IAmazonDynamoDB>();
-builder.Services.AddScoped<ProfileService>(); // <-- THIS IS REQUIRED
-//define the Plaid Client to interact with API
+//Add DynamoDB services to the dependency injection container
+builder.Services.AddSingleton<IAmazonDynamoDB>(dynamoClient);
+builder.Services.AddSingleton<IDynamoDBContext>(sp =>
+    new DynamoDBContextBuilder()
+        .WithDynamoDBClient(() => sp.GetRequiredService<IAmazonDynamoDB>())
+        .Build());
 builder.Services.Configure<PlaidOptions>(options =>
 {
     options.ClientId =  Env.GetString("PLAID_CLIENT_ID") ?? "";
     options.Secret = Env.GetString("PLAID_SECRET") ?? "";
     options.Environment = Going.Plaid.Environment.Sandbox;
 });
-
+builder.Services.AddSingleton<ProfileService>(); 
 builder.Services.AddSingleton<PlaidClient>();
+builder.Services.AddHostedService<DBinitService>();
+
 // Build the app
 var app = builder.Build();
+
 
 if (app.Environment.IsDevelopment())
 {
