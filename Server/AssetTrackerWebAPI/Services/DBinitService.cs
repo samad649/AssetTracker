@@ -123,11 +123,13 @@ namespace AssetTrackerWebAPI.Services
             }
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-        await CreateAccountsTable();
-        await CreateProfilesTable();
-        await CreateTransactionsTable();
-        }
+            {
+            await Task.WhenAll(
+            CreateAccountsTable(),
+            CreateProfilesTable(),
+            CreateTransactionsTable()
+                );
+            }
     }
 
 }

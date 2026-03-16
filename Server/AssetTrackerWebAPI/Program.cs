@@ -28,16 +28,8 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
     new DynamoDBContextBuilder()
         .WithDynamoDBClient(() => sp.GetRequiredService<IAmazonDynamoDB>())
         .Build());
-builder.Services.Configure<PlaidOptions>(options =>
-{
-    options.ClientId =  Env.GetString("PLAID_CLIENT_ID") ?? "";
-    options.Secret = Env.GetString("PLAID_SECRET") ?? "";
-    options.Environment = Going.Plaid.Environment.Sandbox;
-});
 builder.Services.AddSingleton<ProfileService>(); 
-builder.Services.AddSingleton<PlaidClient>();
 builder.Services.AddHostedService<DBinitService>();
-
 // Build the app
 var app = builder.Build();
 
