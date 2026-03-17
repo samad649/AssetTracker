@@ -8,20 +8,20 @@ namespace AssetTrackerWebAPI.Controllers
     public class ProfileController: ControllerBase
     {
        private readonly MockDataService _mockDataService;
-       private readonly IDynamoDBContext _dynamoDBContext;
 
-       public ProfileController(MockDataService mockDataService, IDynamoDBContext dynamoDBContext)
+
+       public ProfileController(MockDataService mockDataService)
        {
         _mockDataService = mockDataService;
-        _dynamoDBContext = dynamoDBContext;
        } 
          [HttpPost("CreateMockProfile")]
         public async Task<ActionResult<Profile>> CreateMockProfile()
         {
-            var createdProfile = _mockDataService.CreateMockProfile();
-            await _dynamoDBContext.SaveAsync(createdProfile);
+            var createdProfile = await _mockDataService.CreateMockProfile();
             return Ok(createdProfile);
         }
+        [HttpGet("{profileId}")]
+        public 
     }
     
 }

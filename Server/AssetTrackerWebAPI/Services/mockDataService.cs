@@ -69,13 +69,16 @@ namespace AssetTrackerWebAPI.Services
             {
                 await CreateMockAccount(profileId);
             }
-            return new Profile
+            var profile = new Profile
             {
                 profileId = profileId,
                 firstName = firstName,
                 lastName = lastName,
                 email = email,
             };
+            await _dynamoDBContext.SaveAsync(profile);
+
+            return profile;
         }
 
     }
