@@ -4,8 +4,8 @@ using Amazon.DynamoDBv2.DataModel;
 public class Profile
 {
     [DynamoDBHashKey]
-    public string? profileId { get; set; }
-    public List<Account>? accounts { get; set; }
+    public required string profileId { get; set; }
+    public List<string>? accountIds { get; set; }
     public string? firstName { get; set; }
     public string? lastName { get; set; }
     public string? email { get; set; }
