@@ -1,35 +1,42 @@
+using System.Runtime.CompilerServices;
+using Amazon.DynamoDBv2.DataModel;
+
 namespace AssetTrackerWebAPI.Services
 {
     public class MockDataService
     {
         private static readonly Random _random = new Random();
+        private readonly IDynamoDBContext _dynamoDBContext;
 
-        public MockDataService()
+        public MockDataService(IDynamoDBContext dynamoDBContext)
         {
-
+            _dynamoDBContext = dynamoDBContext;
         }
-        public Transaction GetMockTransaction(string accountId)
+        public async Task CreateMockTransaction(string accountId)
         {
             var vendors = new List<string> { "Amazon", "Walmart", "Starbucks", "Apple", "Netflix","Target", "Uber", "Airbnb", 
             "Spotify", "Best Buy", "Costco", "Home Depot", "Macy's", "Nike", "Adidas", "CVS", "Daves Hot Chicken", "Aga's", "Chick-fil-A", "Chipotle"};
             
-            return new Transaction
+            var transaction = new Transaction
             {
-                transactionId = Guid.NewGuid().ToString(),
-                accountId = accountId,
-                vendor = vendors[_random.Next(0, vendors.Count)],
-                amount = (float)Math.Round(_random.NextDouble() * 100, 2),
-                date = DateTime.UtcNow.AddDays(-_random.Next(0, 30))
+            transactionId = Guid.NewGuid().ToString(),
+            accountId = accountId,
+            vendor = vendors[_random.Next(0, vendors.Count)],
+            amount = (float)Math.Round(_random.NextDouble() * 100, 2),
+            date = DateTime.UtcNow.AddDays(-_random.Next(0, 30))
             };
+
+            await _dynamoDBContext.SaveAsync(transaction);
+
         }
-        public Account GetMockAccount(string profileId)
+        public async Task CreateMockAccount(string profileId)
         {
             var types = new[] { "Checking", "Savings", "Investment", "Credit", "Crypto" };
 
             var institutions = new List<string> { "Chase", "SoFi", "Bank of America", "Wells Fargo", "Citibank", "Capital One", "PNC Bank", "TD Bank", "Robinhood", "Coinbase",
              "Ally", "US Bank", "Charles Schwab", "Fidelity", "Vanguard", "American Express", "Discover", "Goldman Sachs", "Morgan Stanley", "Barclays", "HSBC" };
 
-            return new Account
+            var account =  new Account
             {
                 profileId = profileId,
                 accountId = Guid.NewGuid().ToString(),
@@ -37,8 +44,17 @@ namespace AssetTrackerWebAPI.Services
                 type = types[_random.Next(0,types.Length)],
                 institution = institutions[_random.Next(0, institutions.Count)]
             };
+
+            int numAccounts = _random.Next(5, 50);
+            for (int i = 0; i < numAccounts; i++)
+            {
+                await CreateMockTransaction(account.accountId);
+            }
+
+            await _dynamoDBContext.SaveAsync(account);
+
         }
-        public Profile GetMockProfile()
+        public async Task<Profile> CreateMockProfile()
         {
             var firstNames = new List<string> { "John", "Jane", "Michael", "Emily", "David", "Sarah", "Robert", "Jessica", "Daniel", "Laura",
              "James", "Olivia", "William", "Sophia", "Joseph", "Isabella", "Charles", "Mia", "Thomas", "Amelia" };
@@ -49,11 +65,9 @@ namespace AssetTrackerWebAPI.Services
             string email = $"{firstName}.{lastName}@gmail.com";
             string profileId = Guid.NewGuid().ToString();
             int numAccounts = _random.Next(1, 4);
-            var accountIds = new List<string>();
             for (int i = 0; i < numAccounts; i++)
             {
-                var account = GetMockAccount(profileId);
-                accountIds.Add(account.accountId);
+                await CreateMockAccount(profileId);
             }
             return new Profile
             {
@@ -61,7 +75,6 @@ namespace AssetTrackerWebAPI.Services
                 firstName = firstName,
                 lastName = lastName,
                 email = email,
-                accountIds = accountIds
             };
         }
 

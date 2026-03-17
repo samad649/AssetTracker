@@ -5,7 +5,6 @@ public class Profile
 {
     [DynamoDBHashKey]
     public required string profileId { get; set; }
-    public List<string>? accountIds { get; set; }
     public string? firstName { get; set; }
     public string? lastName { get; set; }
     public string? email { get; set; }
