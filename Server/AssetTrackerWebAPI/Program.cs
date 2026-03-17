@@ -29,7 +29,7 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
         .WithDynamoDBClient(() => sp.GetRequiredService<IAmazonDynamoDB>())
         .Build());
 builder.Services.AddSingleton<ProfileService>(); 
-builder.Services.AddScoped<MockDataService>();
+builder.Services.AddSingleton<MockDataService>();
 builder.Services.AddHostedService<DBinitService>();
 // Build the app
 var app = builder.Build();
