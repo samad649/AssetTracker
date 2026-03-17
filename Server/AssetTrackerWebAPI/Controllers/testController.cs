@@ -3,7 +3,7 @@ using AssetTrackerWebAPI.Services;
 namespace AssetTrackerWebAPI.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class TestController : ControllerBase
     {
         private readonly ProfileService _profileService;
@@ -18,16 +18,11 @@ namespace AssetTrackerWebAPI.Controllers
         {
             return Ok("Hello World");
         }
-        [HttpGet("profile")]
-        public IActionResult GetProfile()
+
+        [HttpGet("GetMockProfile")]
+        public ActionResult<Profile> CreateProfile()
         {
-            var profile = _profileService.CreateProfile();
-            return Ok(profile);
-        }
-        [HttpPost("CreateProfile")]
-        public async Task<ActionResult<Profile>> CreateProfile([FromBody] Profile profile)
-        {
-            var createdProfile = await _profileService.CreateProfileAsync(profile);
+            var createdProfile = _profileService.GetMockProfile();
             return Ok(createdProfile);
         }
     }
