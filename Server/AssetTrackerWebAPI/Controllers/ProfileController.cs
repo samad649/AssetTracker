@@ -8,11 +8,13 @@ namespace AssetTrackerWebAPI.Controllers
     public class ProfileController: ControllerBase
     {
        private readonly MockDataService _mockDataService;
+       private readonly ProfileService _profileService;
 
-
-       public ProfileController(MockDataService mockDataService)
+       public ProfileController(MockDataService mockDataService, ProfileService profileService)
        {
         _mockDataService = mockDataService;
+        _profileService = profileService;
+        
        } 
          [HttpPost("CreateMockProfile")]
         public async Task<ActionResult<Profile>> CreateMockProfile()
@@ -21,7 +23,34 @@ namespace AssetTrackerWebAPI.Controllers
             return Ok(createdProfile);
         }
         [HttpGet("{profileId}")]
-        public 
+        public async Task<ActionResult<Profile>> GetProfile(string profileId)
+        {
+            var profile = await _profileService.GetProfile(profileId);
+            if (profile == null)
+            {
+                return NotFound();
+            }
+            return Ok(profile);
+        }
+        [HttpGet("all")]
+        public async Task<ActionResult<IEnumerable<Profile>>> GetAllProfiles()
+        {
+            var profiles = await _profileService.GetAllProfiles();
+            return Ok(profiles);
+        }
+        [HttpGet("{profileId}/accounts")]
+        public async Task<ActionResult<IEnumerable<Account>>> GetProfileAccounts(string profileId)
+        {
+            var accounts = await _profileService.GetProfileAccounts(profileId);
+            return Ok(accounts);
+        }
+        [HttpGet("accounts/{accountId}/transactions")]
+        public async Task<ActionResult<IEnumerable<Transaction>>> GetAccountTransactions(string accountId)
+        {
+            var transactions = await _profileService.GetAccountTransactions(accountId);
+            return Ok(transactions);
+        }
+
     }
     
 }

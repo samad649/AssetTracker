@@ -57,11 +57,13 @@ namespace AssetTrackerWebAPI.Services
             TableName = tableName,
             AttributeDefinitions = new List<AttributeDefinition>
                 {
-                new AttributeDefinition { AttributeName = "accountId", AttributeType = "S" }
+                new AttributeDefinition { AttributeName = "accountId", AttributeType = "S" },
+                new AttributeDefinition { AttributeName = "profileId", AttributeType = "S" }
                 },
             KeySchema = new List<KeySchemaElement>
                 {
-                new KeySchemaElement { AttributeName = "accountId", KeyType = "HASH" }
+                new KeySchemaElement { AttributeName = "profileId", KeyType = "HASH" },
+                new KeySchemaElement { AttributeName = "accountId", KeyType = "RANGE" }
                 },
             BillingMode = BillingMode.PAY_PER_REQUEST
             };
@@ -94,11 +96,13 @@ namespace AssetTrackerWebAPI.Services
             TableName = tableName,
             AttributeDefinitions = new List<AttributeDefinition>
                 {
+                new AttributeDefinition { AttributeName = "accountId", AttributeType = "S" },   
                 new AttributeDefinition { AttributeName = "transactionId", AttributeType = "S" }
                 },
             KeySchema = new List<KeySchemaElement>
                 {
-                new KeySchemaElement { AttributeName = "transactionId", KeyType = "HASH" }
+                new KeySchemaElement { AttributeName = "accountId", KeyType = "HASH" },    
+                new KeySchemaElement { AttributeName = "transactionId", KeyType = "RANGE" }
                 },
             BillingMode = BillingMode.PAY_PER_REQUEST
             };

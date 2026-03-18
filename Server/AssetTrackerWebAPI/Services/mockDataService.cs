@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using Amazon.DynamoDBv2.DataModel;
 
 namespace AssetTrackerWebAPI.Services
@@ -64,7 +63,7 @@ namespace AssetTrackerWebAPI.Services
             string lastName = lastNames[_random.Next(0, lastNames.Count)];
             string email = $"{firstName}.{lastName}@gmail.com";
             string profileId = Guid.NewGuid().ToString();
-            int numAccounts = _random.Next(1, 4);
+            int numAccounts = _random.Next(1, 6);
             for (int i = 0; i < numAccounts; i++)
             {
                 await CreateMockAccount(profileId);

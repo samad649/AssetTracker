@@ -1,5 +1,4 @@
 using DotNetEnv;
-using Going.Plaid;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using AssetTrackerWebAPI.Services;
@@ -28,7 +27,8 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
     new DynamoDBContextBuilder()
         .WithDynamoDBClient(() => sp.GetRequiredService<IAmazonDynamoDB>())
         .Build());
-builder.Services.AddSingleton<MockDataService>();
+builder.Services.AddScoped<MockDataService>();      
+builder.Services.AddScoped<ProfileService>();      
 builder.Services.AddHostedService<DBinitService>();
 // Build the app
 var app = builder.Build();
