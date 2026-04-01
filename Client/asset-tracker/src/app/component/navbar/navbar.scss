@@ -1,0 +1,122 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  min-height: 64px; 
+  padding: 12px 8px; 
+}
+.navbar-logo{
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.navbar-logo img {
+  filter: brightness(1.25) saturate(1.2);
+  transition: all 0.3s ease;
+  height: 50px;        
+  width: auto;         
+  object-fit: contain; 
+  &:hover {
+    filter: brightness(1.2) saturate(1.5) drop-shadow(0 0 8px rgba(46, 196, 182, 0.8));
+    transform: scale(1.05);
+    cursor: pointer;
+  }
+}
+.spacer {
+  flex: 1;
+}
+  .title{
+    filter: brightness(1.2) saturate(1.5) drop-shadow(0 0 8px rgba(46, 196, 182, 0.8));
+    transform: scale(1.05);
+    cursor: pointer;
+  background: linear-gradient(90deg, #2EC4B6, #1FA2C9, #66D5C4, #1E40AF, #2EC4B6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-family: 'Quantico';
+  font-size: 1.5em;
+    margin-top: 8px; // nudge down slightly
+  }
+
+.navbar-list{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    text-decoration: none; 
+}
+.navbar-list a {
+    color: aliceblue;
+    text-decoration: none;
+    transition: all 0.2s ease; 
+
+}
+.navbar-list a:hover:not(.active) {
+  background: linear-gradient(90deg, #2EC4B6, #1FA2C9, #66D5C4, #1E40AF, #2EC4B6);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientSlide 2s linear infinite;
+}
+.navbar-link.active{
+  background: linear-gradient(90deg, #2EC4B6, #1FA2C9, #66D5C4, #1E40AF, #2EC4B6);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientSlide 2s linear infinite, glowPulse 2s ease-in-out infinite;
+  font-size: larger;
+  border-radius: 25px;
+  padding: 6px 15px;
+}
+
+.navbar-list ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  gap: 60px;
+  margin: 0;
+  padding: 0;
+  font-size: larger;
+}
+
+
+.profile-logo {
+margin-right: 20px;
+}
+
+
+.user-icon {
+    color: aliceblue;
+    font-size: larger;
+  transition: all 0.2s ease;
+  font-size: 24px;
+
+  &:hover {
+    animation: colorLoop 2s ease-in-out infinite;    
+    cursor: pointer;
+  }
+}
+
+.navbar-link.active .user-icon {
+  transform: scale(1.3);
+  animation: colorLoop 1.5s ease-in-out infinite;  
+  text-shadow: 0 0 8px rgba(46, 196, 182, 0.6);
+}
+@keyframes gradientSlide {
+  0%   { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes colorLoop {
+  0%   { color: #2EC4B6; }
+  25%  { color: #1FA2C9; }
+  50%  { color: #66D5C4; }
+  75%  { color: #1E40AF; }
+  100% { color: #2EC4B6; }
+}
+@keyframes glowPulse {
+  0%   { box-shadow: 0 0 0 2px #2EC4B6; }
+  25%  { box-shadow: 0 0 0 2px #1FA2C9; }
+  50%  { box-shadow: 0 0 0 2px #66D5C4; }
+  75%  { box-shadow: 0 0 0 2px #1FA2C9; }
+  100% { box-shadow: 0 0 0 2px #2EC4B6; }
+}
