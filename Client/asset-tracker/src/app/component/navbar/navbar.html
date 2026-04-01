@@ -1,0 +1,19 @@
+<nav class="navbar">
+  <div class="navbar-logo">
+   <a routerLink="/">
+  <img src="AssetTracker-Logo.png" alt="Logo"> 
+  </a>
+  <span class="title">AssetTracker</span>
+  </div>
+<div class="spacer"></div>
+  <div class="navbar-list">
+    <ul>
+      <li><a routerLink="/accounts" routerLinkActive="active" class="navbar-link">Accounts</a></li>
+      <li><a routerLink="/transactions" routerLinkActive="active" class="navbar-link">Transactions</a></li>
+      <li><a routerLink="/plaid" routerLinkActive="active" class="navbar-link">Plaid</a></li>
+      <span class="profile-logo">
+        <li><a routerLink="/profile" routerLinkActive="active" class="navbar-link"><span nz-icon nzType="user" nzTheme="outline" class="user-icon" ></span></a></li>
+      </span>
+    </ul>
+  </div>
+</nav>

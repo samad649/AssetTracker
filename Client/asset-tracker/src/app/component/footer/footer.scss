@@ -1,0 +1,48 @@
+.footer {
+  background: #1A2332;
+  color: aliceblue;
+  font-size: 12px;
+  padding: 18px;
+  padding-top: 4%;
+    p {
+    text-align: center;
+    color: rgba(255,255,255,0.5);
+    margin: 0;
+    border-top: 1px solid rgba(255,255,255,0.1); // subtle divider
+    padding-top: 16px;
+  }
+}
+
+ .footer-items {
+    line-height: 1.6; // makes paragraph easier to read
+    display: flex;
+    justify-content: space-evenly;
+
+    gap: 80px;
+    margin-bottom: 24px;
+    ul {
+      text-align: center;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+         max-width: 400px;
+        margin-bottom: 8px;
+      }
+      li:first-child{
+        opacity: .8;
+        color: #66D5C4;
+        
+      }
+    }
+    }
+
+.logo-color {
+    font-size: large;
+  background: linear-gradient(90deg, #2EC4B6, #1FA2C9, #66D5C4, #1E40AF, #2EC4B6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  display: inline-block; // needed for background-clip to work on inline elements
+}

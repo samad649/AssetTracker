@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
+import { NzButtonModule } from 'ng-zorro-antd/button';
 
 @Component({
   selector: 'app-home',
-  imports: [],
+  imports: [NzButtonModule],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })

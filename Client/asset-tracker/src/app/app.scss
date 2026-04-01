@@ -1,0 +1,57 @@
+.main{
+  position: relative;
+  background-image: url('/background2.jpg');
+  background-position: center; // centers the image
+  background-repeat: no-repeat; 
+  min-height: 100vh;
+  background-size: 150%;
+  background-attachment: fixed;
+animation: pan 30s linear infinite alternate, 
+           tintShift 15s ease-in-out infinite;
+          }
+.content {
+  position: relative;
+  z-index: 1;
+}
+.main::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: transparent;
+  backdrop-filter: blur(0px) brightness(1);
+  transition: backdrop-filter 1.5s ease-in-out;
+  pointer-events: none;
+  z-index: 0;
+}
+.main.blurred::before {
+  backdrop-filter: blur(10px) brightness(0.6);
+}
+.main.blurred {
+  animation: none;
+  transition: 3s ease-in-out;
+}
+
+app-navbar, router-outlet {
+  position: relative;
+  z-index: 1;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+app-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100; // much higher than ::before's z-index: 0
+}
+@keyframes pan {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+@keyframes tintShift {
+  0%   { filter: hue-rotate(0deg); }
+  50%  { filter: hue-rotate(30deg); }
+  100% { filter: hue-rotate(0deg); }
+}
