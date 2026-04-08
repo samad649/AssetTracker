@@ -25,6 +25,7 @@ ScaffoldingReadMe.txt
 # NuGet
 *.nupkg
 *.snupkg
+appsettings.Development.json
 
 # ==== ASP.NET Core ====
 # Keep appsettings*.json committed but NEVER put secrets in them
