@@ -1,1 +1,6 @@
-<p>transaction-card works!</p>
+<div *ngFor="let account of accounts; let i = index">
+  <h2>{{ account.institution }}</h2>
+  <div *ngFor="let transaction of transactions[i]">
+    {{ transaction.vendor }} - {{ transaction.amount }}
+  </div>
+</div>

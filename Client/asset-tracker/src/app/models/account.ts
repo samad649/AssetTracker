@@ -1,5 +1,7 @@
 export interface Account{
+    profileId:string;
     accountId: string;
-    balance: number;
-    institution: string;
+    type?:string | null;
+    balance?: number | null;
+    institution?: string | null;
 }

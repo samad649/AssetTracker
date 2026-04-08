@@ -9,9 +9,10 @@
 animation: pan 30s linear infinite alternate, 
            tintShift 15s ease-in-out infinite;
           }
-.content {
+.content ::ng-deep * {
   position: relative;
   z-index: 1;
+  color: aliceblue;
 }
 .main::before {
   content: '';

@@ -1,0 +1,11 @@
+<h1 *ngIf="profile">
+  {{ profile.firstName }} {{ profile.lastName }}
+</h1>
+
+<h1>Accounts:</h1>
+<h2 *ngFor="let account of accounts$ | async">
+  {{ account.accountId }}
+  {{ account.balance }}
+  {{ account.type }}
+  {{ account.institution }}
+</h2>
