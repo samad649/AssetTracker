@@ -2,7 +2,9 @@ using DotNetEnv;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using AssetTrackerWebAPI.Services;
-
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 
 var dynamoConfig = new AmazonDynamoDBConfig
@@ -30,6 +32,21 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
 builder.Services.AddScoped<MockDataService>();      
 builder.Services.AddScoped<ProfileService>();      
 builder.Services.AddHostedService<DBinitService>();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options => {
+        options.TokenValidationParameters = new TokenValidationParameters {
+            ValidateIssuer = false,           // skip issuer check for now
+            ValidateAudience = false,         // skip audience check for now
+            ValidateLifetime = true,          // check expiry
+            ValidateIssuerSigningKey = true,  // verify signature
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])
+            )
+        };
+    });
+
+builder.Services.AddAuthorization();
 // Build the app
 var app = builder.Build();
 

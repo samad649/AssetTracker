@@ -1,7 +1,6 @@
-
-import  { Account } from "./account";
-
 export interface Profile {
-    name: string;
-    accounts: Account[];
+  profileId: string;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
 }

@@ -12,6 +12,43 @@ namespace AssetTrackerWebAPI.Services
         {
             _dynamoDBClient = dynamoDBClient;
         }
+        async Task CreateUsersTable()
+        {
+        var tableName = "Users";
+        var request = new CreateTableRequest
+            {
+            TableName = tableName,
+            AttributeDefinitions = new List<AttributeDefinition>
+                {
+                new AttributeDefinition { AttributeName = "userId", AttributeType = "S" }
+                },
+            KeySchema = new List<KeySchemaElement>
+                {
+                new KeySchemaElement { AttributeName = "userId", KeyType = "HASH" }
+                },
+            BillingMode = BillingMode.PAY_PER_REQUEST
+            };
+            try
+            {
+                await _dynamoDBClient.CreateTableAsync(request);
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Table '{tableName}' created successfully.");
+                Console.ResetColor(); 
+            }
+            catch (ResourceInUseException)
+            {
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine($"Table '{tableName}' already exists.");
+                    Console.ResetColor();
+            }
+            catch (Exception ex)
+            {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"Error creating table: {ex.Message}");
+                    Console.ResetColor();
+            }
+        }
+
         async Task CreateProfilesTable()
         {
         var tableName = "Profiles";
@@ -49,7 +86,7 @@ namespace AssetTrackerWebAPI.Services
             }
         }
 
-            async Task CreateAccountsTable()
+        async Task CreateAccountsTable()
         {
         var tableName = "Accounts";
         var request = new CreateTableRequest
@@ -131,7 +168,8 @@ namespace AssetTrackerWebAPI.Services
             await Task.WhenAll(
             CreateAccountsTable(),
             CreateProfilesTable(),
-            CreateTransactionsTable()
+            CreateTransactionsTable(),
+            CreateUsersTable()
                 );
             }
     }

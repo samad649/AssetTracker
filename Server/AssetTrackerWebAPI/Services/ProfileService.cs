@@ -1,5 +1,8 @@
 using Amazon.DynamoDBv2.DataModel;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims; 
+
 namespace AssetTrackerWebAPI.Services
 {
     public class ProfileService
