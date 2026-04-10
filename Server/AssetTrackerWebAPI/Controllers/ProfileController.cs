@@ -16,11 +16,11 @@ namespace AssetTrackerWebAPI.Controllers
         _profileService = profileService;
         
        } 
-         [HttpPost("CreateMockProfile")]
-        public async Task<ActionResult<Profile>> CreateMockProfile()
+         [HttpPost("CreateMockUser")]
+        public async Task<ActionResult<User>> CreateMockUser()
         {
-            var createdProfile = await _mockDataService.CreateMockProfile();
-            return Ok(createdProfile);
+            var createdUser = await _mockDataService.CreateMockUser();
+            return Ok(createdUser);
         }
         [HttpGet("{profileId}")]
         public async Task<ActionResult<Profile>> GetProfile(string profileId)

@@ -1,3 +1,5 @@
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 namespace AssetTrackerWebAPI.Services
 {
     class UserService{

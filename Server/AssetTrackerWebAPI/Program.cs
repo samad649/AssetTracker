@@ -30,22 +30,25 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
         .WithDynamoDBClient(() => sp.GetRequiredService<IAmazonDynamoDB>())
         .Build());
 builder.Services.AddScoped<MockDataService>();      
-builder.Services.AddScoped<ProfileService>();      
+builder.Services.AddScoped<ProfileService>();    
+builder.Services.AddScoped<AuthService>();    
 builder.Services.AddHostedService<DBinitService>();
+
+var secretKey = builder.Configuration["Jwt:SecretKey"] 
+    ?? throw new Exception("JWT SecretKey not configured");
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         options.TokenValidationParameters = new TokenValidationParameters {
-            ValidateIssuer = false,           // skip issuer check for now
-            ValidateAudience = false,         // skip audience check for now
-            ValidateLifetime = true,          // check expiry
-            ValidateIssuerSigningKey = true,  // verify signature
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:SecretKey"])
+                Encoding.UTF8.GetBytes(secretKey) // ← use variable here
             )
         };
     });
-
 builder.Services.AddAuthorization();
 // Build the app
 var app = builder.Build();

@@ -55,13 +55,13 @@ namespace AssetTrackerWebAPI.Services
         }
         public async Task<Profile> CreateMockProfile()
         {
+            
             var firstNames = new List<string> { "John", "Jane", "Michael", "Emily", "David", "Sarah", "Robert", "Jessica", "Daniel", "Laura",
              "James", "Olivia", "William", "Sophia", "Joseph", "Isabella", "Charles", "Mia", "Thomas", "Amelia" };
             var lastNames = new List<string> { "Smith", "Johnson", "Brown", "Taylor", "Anderson", "Thomas", "Jackson", "White", "Harris", "Martin",
              "Thompson", "Garcia", "Martinez", "Robinson" };
             string firstName = firstNames[_random.Next(0, firstNames.Count)];
             string lastName = lastNames[_random.Next(0, lastNames.Count)];
-            string email = $"{firstName}.{lastName}@gmail.com";
             string profileId = Guid.NewGuid().ToString();
             int numAccounts = _random.Next(1, 6);
             for (int i = 0; i < numAccounts; i++)
@@ -73,11 +73,28 @@ namespace AssetTrackerWebAPI.Services
                 profileId = profileId,
                 firstName = firstName,
                 lastName = lastName,
-                email = email,
             };
             await _dynamoDBContext.SaveAsync(profile);
 
             return profile;
+        }
+        public async Task<User> CreateMockUser()
+        {
+            var profile = await CreateMockProfile();
+
+            string email = $"{profile.firstName}.{profile.lastName}@gmail.com";
+
+            var user = new User
+            {
+                userId = Guid.NewGuid().ToString(),
+                profileId = profile.profileId,
+                email = email,
+                password = "password123",
+                username = $"{profile.firstName}-{profile.lastName}-{_random.Next(1000,9999)}"
+            };
+
+            await _dynamoDBContext.SaveAsync(user);
+            return user;
         }
 
     }

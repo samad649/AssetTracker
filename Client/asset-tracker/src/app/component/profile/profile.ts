@@ -6,7 +6,7 @@ import { SharedService } from '../../services/sharedService';
 import { Profile as ProfileModel } from '../../models/profile';
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
-
+import { authService } from '../../services/authService';
 @Component({
   selector: 'app-profile',
   standalone: true,
@@ -17,12 +17,12 @@ import { Observable } from 'rxjs';
 export class Profile {
   profiles$: Observable<ProfileModel[]>;
 
-  constructor(private profileService: ProfileService, private sharedService: SharedService) {
+  constructor(private profileService: ProfileService, private sharedService: SharedService, private authService: authService) {
     this.profiles$ = this.profileService.getAllProfiles();
   }
 
   onSelectProfile(profile: ProfileModel) {
-    //console.log(profile);
+    console.log(profile);
     this.sharedService.setSelectedProfile(profile);
   }
 }
