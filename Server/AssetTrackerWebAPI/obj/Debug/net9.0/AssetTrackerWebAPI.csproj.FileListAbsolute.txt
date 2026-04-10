@@ -53,3 +53,11 @@
 /Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/DotNetEnv.dll
 /Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Sprache.dll
 /Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/AWSSDK.Extensions.NETCore.Setup.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Abstractions.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.IdentityModel.JsonWebTokens.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Logging.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
