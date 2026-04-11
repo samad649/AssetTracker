@@ -10,3 +10,25 @@
       </li>
       </ul>
     </nz-dropdown-menu>
+
+<div class="login-container">
+<form nz-form nzLayout="vertical" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <nz-form-item>
+        <nz-form-control [nzSpan]="6">
+            <input formControlName="username" nz-input placeholder="username" />
+        </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+        <nz-form-control [nzSpan]="6">
+          <nz-input-password>
+            <input formControlName="password" nz-input placeholder="Password" />
+          </nz-input-password>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control>
+          <button nz-button nzType="primary">Log in</button>
+        </nz-form-control>
+      </nz-form-item>
+</form>
+</div>
