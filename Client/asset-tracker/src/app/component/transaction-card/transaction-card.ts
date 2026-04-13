@@ -5,8 +5,8 @@ import { SharedService } from '../../services/sharedService';
 import { Transaction as TransactionModel } from '../../models/transaction';
 import { Profile as ProfileModel } from '../../models/profile';
 import { Account as AccountModel } from '../../models/account';
-import { forkJoin } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
+import { forkJoin, of} from 'rxjs';
+import { filter, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction-card',
@@ -24,28 +24,36 @@ export class TransactionCard implements OnInit {
     private profileService: ProfileService,
     private sharedService: SharedService
   ) {}
+ngOnInit() {
+  this.sharedService.selectedProfile$.pipe(
 
-  ngOnInit() {
-    // Index of Account and Transaction Array are linked,
-    this.profile = this.sharedService.getSelectedProfile();
+    filter(profile => !!profile?.profileId),
 
-    this.profileService.getAccounts(this.profile?.profileId ?? '').pipe(
-      switchMap(accounts => {
-        this.accounts = accounts;
-        const requests = accounts.map(account =>
-          this.profileService.getTransactions(account.accountId ?? '')
-        );
-        return forkJoin(requests);
-      })
-    ).subscribe({
-      next: (allTransactions) => {
-        this.transactions = allTransactions; // keep as 2D array
-        this.loading = false;
-      },
-      error: (err) => {
-        console.error(err);
-        this.loading = false;
-      }
-    });
-  }
+    switchMap(profile => 
+      this.profileService.getAccounts(profile!.profileId)
+    ),
+
+    switchMap(accounts => {
+      this.accounts = accounts;
+
+      if (accounts.length === 0) return of([]); // avoid forkJoin([]) issue
+
+      const requests = accounts.map(account =>
+        this.profileService.getTransactions(account.accountId ?? '')
+      );
+
+      return forkJoin(requests);
+    })
+
+  ).subscribe({
+    next: (allTransactions) => {
+      this.transactions = allTransactions;
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error(err);
+      this.loading = false;
+    }
+  });
+}
 }

@@ -32,6 +32,7 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
 builder.Services.AddScoped<MockDataService>();      
 builder.Services.AddScoped<ProfileService>();    
 builder.Services.AddScoped<AuthService>();    
+builder.Services.AddScoped<UserService>();
 builder.Services.AddHostedService<DBinitService>();
 
 var secretKey = builder.Configuration["Jwt:SecretKey"] 

@@ -16,38 +16,55 @@ namespace AssetTrackerWebAPI.Services
         {
         var tableName = "Users";
         var request = new CreateTableRequest
-            {
+        {
             TableName = tableName,
             AttributeDefinitions = new List<AttributeDefinition>
-                {
-                new AttributeDefinition { AttributeName = "userId", AttributeType = "S" }
-                },
+            {
+                new AttributeDefinition { AttributeName = "userId", AttributeType = "S" },
+                new AttributeDefinition { AttributeName = "username", AttributeType = "S" } // ← add this
+            },
             KeySchema = new List<KeySchemaElement>
-                {
+            {
                 new KeySchemaElement { AttributeName = "userId", KeyType = "HASH" }
-                },
+            },
+            GlobalSecondaryIndexes = new List<GlobalSecondaryIndex> // ← add this
+            {
+                new GlobalSecondaryIndex
+                {
+                    IndexName = "username-index",
+                    KeySchema = new List<KeySchemaElement>
+                    {
+                        new KeySchemaElement { AttributeName = "username", KeyType = "HASH" }
+                    },
+                    Projection = new Projection
+                    {
+                        ProjectionType = ProjectionType.ALL // ← return all attributes
+                    }
+                }
+            },
             BillingMode = BillingMode.PAY_PER_REQUEST
-            };
-            try
-            {
-                await _dynamoDBClient.CreateTableAsync(request);
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine($"Table '{tableName}' created successfully.");
-                Console.ResetColor(); 
-            }
-            catch (ResourceInUseException)
-            {
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine($"Table '{tableName}' already exists.");
-                    Console.ResetColor();
-            }
-            catch (Exception ex)
-            {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine($"Error creating table: {ex.Message}");
-                    Console.ResetColor();
-            }
+        };
+
+        try
+        {
+            await _dynamoDBClient.CreateTableAsync(request);
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Table '{tableName}' created successfully.");
+            Console.ResetColor();
         }
+        catch (ResourceInUseException)
+        {
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Table '{tableName}' already exists.");
+            Console.ResetColor();
+        }
+        catch (Exception ex)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine($"Error creating table: {ex.Message}");
+            Console.ResetColor();
+        }
+    }
 
         async Task CreateProfilesTable()
         {

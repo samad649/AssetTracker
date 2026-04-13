@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using AssetTrackerWebAPI.Services;
-using Amazon.DynamoDBv2.DataModel;
 namespace AssetTrackerWebAPI.Controllers
 {
     [ApiController]

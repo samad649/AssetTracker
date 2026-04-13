@@ -19,22 +19,23 @@ namespace AssetTrackerWebAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login([FromBody] User loginRequest)
+        public async Task<ActionResult<string>> Login([FromBody] LoginRequest loginRequest)
         {
-            if (loginRequest.email == null || loginRequest.password == null)
-                return BadRequest("Email and password are required");
-                
-            var user = await _authService.Validate(loginRequest.email, loginRequest.password);
+            if (loginRequest.Username == null || loginRequest.Password == null)
+                return BadRequest("Username and Password are required");
+
+            var user = await _authService.Validate(loginRequest.Username, loginRequest.Password);
             if (user == null)
             {
-                _logger.LogWarning("Login failed for {email}", loginRequest.email);
+                _logger.LogWarning("Login failed for {username}", loginRequest.Username);
                 return Unauthorized("Invalid credentials");
             }
 
             var token = _authService.GenerateToken(user);
-            _logger.LogInformation("Login successful for {email}", user.email);
+            _logger.LogInformation("Login successful for {username}", user.username);
 
-            return Ok(new { token });
+            return Ok(new { token, user });
+
         }
     }
 }
