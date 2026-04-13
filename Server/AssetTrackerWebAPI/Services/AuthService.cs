@@ -38,14 +38,17 @@ namespace AssetTrackerWebAPI.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<User?> Validate(string email, string password)
+        public async Task<User?> Validate(string username, string password)
         {
-            var conditions = new List<ScanCondition>
-            {
-                new ScanCondition("email", ScanOperator.Equal, email)
-            };
+            var query = _dynamoDBContext.QueryAsync<User>(
+                username,
+                new QueryConfig
+                {
+                    IndexName = "username-index"
+                }
+            );
 
-            var users = await _dynamoDBContext.ScanAsync<User>(conditions).GetRemainingAsync();
+            var users = await query.GetRemainingAsync();
             var user = users.FirstOrDefault();
 
             if (user == null) return null;
