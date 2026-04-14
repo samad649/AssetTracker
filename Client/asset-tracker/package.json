@@ -32,6 +32,7 @@
     "@angular/router": "^20.2.0",
     "ng-zorro-antd": "^20.4.4",
     "ngx-plaid-link": "^14.0.0",
+    "plaid": "^41.4.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
