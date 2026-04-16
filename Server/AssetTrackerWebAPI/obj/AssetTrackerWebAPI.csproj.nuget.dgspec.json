@@ -58,7 +58,7 @@
             },
             "Going.Plaid": {
               "target": "Package",
-              "version": "[6.48.0, )"
+              "version": "[6.60.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
