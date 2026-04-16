@@ -48,13 +48,16 @@ namespace AssetTrackerWebAPI.Services
             if (response.Error != null)
                 throw new Exception($"Plaid error: {response.Error.ErrorMessage}");
 
-            await _dbContext.PlaidTokens.AddAsync(new PlaidToken
+            var item = new PlaidItem
             {
                 UserId = userId,
                 AccessToken = response.AccessToken,
-                ItemId = response.ItemId  
-            });
-            await _dbContext.SaveChangesAsync();
+                ItemId = response.ItemId,
+                CreatedAt = DateTime.UtcNow.ToString("o")
+            };
+
+            await _dbContext.SaveAsync(item);
+            return item.ItemId;
         }
     }
 }
