@@ -5,7 +5,7 @@ using AssetTrackerWebAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-
+using Going.Plaid;
 
 var dynamoConfig = new AmazonDynamoDBConfig
 {
@@ -29,6 +29,8 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
     new DynamoDBContextBuilder()
         .WithDynamoDBClient(() => sp.GetRequiredService<IAmazonDynamoDB>())
         .Build());
+builder.Services.AddPlaid(builder.Configuration);       // registers PlaidClient
+builder.Services.AddScoped<PlaidService>();   
 builder.Services.AddScoped<MockDataService>();      
 builder.Services.AddScoped<ProfileService>();    
 builder.Services.AddScoped<AuthService>();    

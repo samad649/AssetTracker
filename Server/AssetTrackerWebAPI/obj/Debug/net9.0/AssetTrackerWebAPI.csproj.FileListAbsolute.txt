@@ -61,3 +61,5 @@
 /Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/Microsoft.IdentityModel.Tokens.dll
 /Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/System.IdentityModel.Tokens.Jwt.dll
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/package-lock.json
+/Users/samadalnawaz/Desktop/SWE/AssetTracker/Server/AssetTrackerWebAPI/bin/Debug/net9.0/package.json
