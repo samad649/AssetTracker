@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using AssetTrackerWebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
+
 namespace AssetTrackerWebAPI.Controllers
 {
 [ApiController]
@@ -12,26 +14,28 @@ namespace AssetTrackerWebAPI.Controllers
         {
             _plaidService = plaidService;
         }
+        [AllowAnonymous]
         [HttpPost("createLinkToken")]
-        public async Task<IActionResult> CreateLinkToken()
+        public async Task<IActionResult> CreateLinkToken([FromBody] CreateLinkTokenRequest request)
         {
+            Console.WriteLine("=== CreateLinkToken controller hit ===");
             try
             {
-                var token = await _plaidService.CreateLinkToken("test-user-123");
+                var token = await _plaidService.CreateLinkToken(request.UserId);
                 return Ok(new { link_token = token });
             }
             catch (Exception ex)
             {
-                // This will show Plaid's actual error in the response
+                Console.WriteLine($"=== Exception: {ex.Message} ===");
                 return BadRequest(new { error = ex.Message, detail = ex.ToString() });
             }
         }
         [HttpPost("exchangePublicToken")]
-        public async Task<IActionResult> ExchangePublicToken([FromBody] string publicToken)
+        public async Task<IActionResult> ExchangePublicToken([FromBody] ExchangeTokenRequest request)
         {
             try
             {
-                await _plaidService.ExchangeAndStoreToken(publicToken, userId);
+                await _plaidService.ExchangeAndStoreToken(request.PublicToken, request.UserId);
                 return Ok(new { success = true });  
             }
             catch (Exception ex)

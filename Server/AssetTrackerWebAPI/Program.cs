@@ -29,7 +29,7 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
     new DynamoDBContextBuilder()
         .WithDynamoDBClient(() => sp.GetRequiredService<IAmazonDynamoDB>())
         .Build());
-builder.Services.AddPlaid(builder.Configuration);       // registers PlaidClient
+builder.Services.AddPlaid(builder.Configuration);  
 builder.Services.AddScoped<PlaidService>();   
 builder.Services.AddScoped<MockDataService>();      
 builder.Services.AddScoped<ProfileService>();    

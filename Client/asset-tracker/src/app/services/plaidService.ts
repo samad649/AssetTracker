@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-declare var Plaid: any; // ✅ fix for global Plaid
+declare var Plaid: any; 
 
 @Injectable({
   providedIn: 'root'
@@ -12,17 +12,19 @@ export class PlaidService {
 
   constructor(private http: HttpClient) {}
 
-  createLinkToken(userId: string) {
-    return this.http.post<any>(`${this.apiUrl}/createLinkToken`, { userId });
-  }
-
+createLinkToken(userId: string) {
+  return this.http.post<any>(
+    `${this.apiUrl}/createLinkToken`,
+    { userId: userId }  
+  );
+}
   openPlaidLink(linkToken: string) {
     const handler = Plaid.create({
       token: linkToken,
 
       onSuccess: (public_token: string, metadata: any) => {
         console.log('Success:', public_token);
-        //BACKEND SEND Data
+        console.log(metadata)
       },
 
       onLoad: () => {

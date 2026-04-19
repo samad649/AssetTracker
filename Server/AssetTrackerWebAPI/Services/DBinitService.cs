@@ -222,7 +222,8 @@ namespace AssetTrackerWebAPI.Services
             CreateAccountsTable(),
             CreateProfilesTable(),
             CreateTransactionsTable(),
-            CreateUsersTable()
+            CreateUsersTable(),
+            CreatePlaidItemsTable()
                 );
             }
     }
