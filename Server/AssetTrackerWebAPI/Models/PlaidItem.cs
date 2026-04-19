@@ -1,3 +1,5 @@
+using Amazon.DynamoDBv2.DataModel;
+
 public class PlaidItem
 {
     [DynamoDBHashKey]

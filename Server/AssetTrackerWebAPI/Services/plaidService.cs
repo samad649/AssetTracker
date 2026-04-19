@@ -1,41 +1,48 @@
 using Going.Plaid;
 using Going.Plaid.Link;
 using Going.Plaid.Entity;
+using Going.Plaid.Item;
+using Amazon.DynamoDBv2.DataModel;
+
 
 namespace AssetTrackerWebAPI.Services
 {
     public class PlaidService
     {
         private readonly PlaidClient _plaidClient;
+        private readonly IDynamoDBContext _dynamoDb;
 
-        public PlaidService(PlaidClient plaidClient)
+        public PlaidService(PlaidClient plaidClient, IDynamoDBContext dynamoDb)
         {
             _plaidClient = plaidClient;
+            _dynamoDb = dynamoDb;
         }
 
         public async Task<string> CreateLinkToken(string userId)
         {
-            var request = new LinkTokenCreateRequest
+        Console.WriteLine($"=== CreateLinkToken called for userId: {userId} ===");
+
+        var request = new LinkTokenCreateRequest
+        {
+            User = new LinkTokenCreateRequestUser
             {
-                User = new LinkTokenCreateRequestUser
-                {
-                    ClientUserId = userId
-                },
-                ClientName = "AssetTracker",
-                Products = new List<Products> { Products.Auth, Products.Transactions },
-                CountryCodes = new List<CountryCode> { CountryCode.Us },
-                Language = Language.English,
-            };
+                ClientUserId = userId
+            },
+            ClientName = "AssetTracker",
+            Products = new List<Products> { Products.Auth, Products.Transactions },
+            CountryCodes = new List<CountryCode> { CountryCode.Us },
+            Language = Language.English,
+        };
 
-            var response = await _plaidClient.LinkTokenCreateAsync(request);
+        var response = await _plaidClient.LinkTokenCreateAsync(request);
 
-            if (response.Error != null)
-                throw new Exception($"Plaid error [{response.Error.ErrorCode}]: {response.Error.ErrorMessage}");
+        if (response.Error != null)
+            throw new Exception($"Plaid error [{response.Error.ErrorCode}]: {response.Error.ErrorMessage}");
 
-            if (string.IsNullOrEmpty(response.LinkToken))
-                throw new Exception("Plaid returned no link token and no error — check your credentials in appsettings.json");
+        if (string.IsNullOrEmpty(response.LinkToken))
+            throw new Exception("Plaid returned no link token and no error — check your credentials in appsettings.json");
 
-            return response.LinkToken;
+        return response.LinkToken;
         }
         public async Task ExchangeAndStoreToken(string publicToken, string userId)
         {
@@ -56,8 +63,8 @@ namespace AssetTrackerWebAPI.Services
                 CreatedAt = DateTime.UtcNow.ToString("o")
             };
 
-            await _dbContext.SaveAsync(item);
-            return item.ItemId;
+            await _dynamoDb.SaveAsync(item);
+
         }
     }
 }

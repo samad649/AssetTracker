@@ -11,13 +11,13 @@ export class Plaid {
   constructor(private plaidService: PlaidService) {}
 
   connectBank() {
-  const userId = '123'; // replace with your actual logged-in user
-
+   const userStr = localStorage.getItem('user') || '{}'; 
+  const user = JSON.parse(userStr);
+  const userId = user.userId || '';
   this.plaidService.createLinkToken(userId).subscribe({
     next: (res: any) => {
       const linkToken = res.link_token;
 
-      // 🔥 open Plaid widget
       this.plaidService.openPlaidLink(linkToken);
     },
     error: (err) => console.error(err)
