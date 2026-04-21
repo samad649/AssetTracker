@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { Navbar } from './component/navbar/navbar';
 import { Footer } from './component/footer/footer';
@@ -11,7 +11,7 @@ import { SharedService } from './services/sharedService';
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
-export class App implements OnInit {
+export class App {
   isLandingPage = true;
 
 
@@ -23,11 +23,5 @@ export class App implements OnInit {
       }
     });
   }
-  ngOnInit(): void {
-  const storedUser = localStorage.getItem('user');
-  if (storedUser) {
-    console.log("Stored user found:", storedUser);
-    this.sharedService.setSelectedUser(JSON.parse(storedUser));
-  }
-}
+
 }

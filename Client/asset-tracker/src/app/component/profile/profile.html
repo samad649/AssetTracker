@@ -1,15 +1,3 @@
-    <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
-      Profiles
-    </a>
-    <nz-dropdown-menu #menu="nzDropdownMenu">
-      <ul nz-menu>
-      <li nz-submenu *ngFor="let profile of profiles$ | async" [nzTitle]="profile.profileId">
-         <ul>
-            <li nz-menu-item (click)="onSelectProfile(profile)">{{ profile.firstName }} {{ profile.lastName }}</li>
-          </ul>
-      </li>
-      </ul>
-    </nz-dropdown-menu>
 
 <div class="login-container">
 <form nz-form nzLayout="vertical" [formGroup]="validateForm" (ngSubmit)="submitForm()">

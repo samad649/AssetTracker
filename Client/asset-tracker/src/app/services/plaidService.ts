@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { authService } from './authService';
 declare var Plaid: any; 
 
 @Injectable({
@@ -10,12 +10,18 @@ export class PlaidService {
 
   private apiUrl = 'https://localhost:7141/api/plaid';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: authService) {}
 
 createLinkToken(userId: string) {
   return this.http.post<any>(
     `${this.apiUrl}/createLinkToken`,
     { userId: userId }  
+  );
+}
+ExchangePublicToken(userId: string, publicToken: string) {
+  return this.http.post<any>(
+    `${this.apiUrl}/exchangePublicToken`,
+    { userId: userId, publicToken: publicToken }
   );
 }
   openPlaidLink(linkToken: string) {
@@ -24,7 +30,8 @@ createLinkToken(userId: string) {
 
       onSuccess: (public_token: string, metadata: any) => {
         console.log('Success:', public_token);
-        console.log(metadata)
+        console.log(metadata);
+        this.ExchangePublicToken(this.authService.getUserId(), public_token);
       },
 
       onLoad: () => {
