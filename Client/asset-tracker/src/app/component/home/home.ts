@@ -8,6 +8,5 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
   styleUrl: './home.scss'
 })
 export class Home {
-  @Input() title: string = 'Home';
 
 }

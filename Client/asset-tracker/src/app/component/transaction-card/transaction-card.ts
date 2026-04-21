@@ -17,7 +17,7 @@ import { filter, switchMap } from 'rxjs/operators';
 export class TransactionCard implements OnInit {
   profile: ProfileModel | null = null;
   accounts: AccountModel[] = [];
-  transactions: TransactionModel[][] = []; // 2D array
+  transactions: TransactionModel[][] = [];
   loading = true;
 
   constructor(
@@ -36,7 +36,7 @@ ngOnInit() {
     switchMap(accounts => {
       this.accounts = accounts;
 
-      if (accounts.length === 0) return of([]); // avoid forkJoin([]) issue
+      if (accounts.length === 0) return of([]); 
 
       const requests = accounts.map(account =>
         this.profileService.getTransactions(account.accountId ?? '')

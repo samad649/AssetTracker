@@ -64,7 +64,7 @@ namespace AssetTrackerWebAPI.Services
             };
 
             await _dynamoDb.SaveAsync(item);
-
+            Console.WriteLine($"=== Stored Plaid item for userId: {userId}, itemId: {item.ItemId} ===");
         }
     }
 }

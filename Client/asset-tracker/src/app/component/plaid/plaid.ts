@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PlaidService } from '../../services/plaidService';
+import { authService } from '../../services/authService';
 @Component({
   selector: 'app-plaid',
   imports: [],
@@ -8,13 +9,11 @@ import { PlaidService } from '../../services/plaidService';
 })
 export class Plaid {
 
-  constructor(private plaidService: PlaidService) {}
+  constructor(private plaidService: PlaidService, private authService: authService) {}
 
   connectBank() {
-   const userStr = localStorage.getItem('user') || '{}'; 
-  const user = JSON.parse(userStr);
-  const userId = user.userId || '';
-  this.plaidService.createLinkToken(userId).subscribe({
+   const userId = this.authService.getUserId();
+   this.plaidService.createLinkToken(userId).subscribe({
     next: (res: any) => {
       const linkToken = res.link_token;
 

@@ -6,7 +6,7 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { ProfileService } from '../../services/profileService';
 import { SharedService } from '../../services/sharedService';
 import { Profile as ProfileModel } from '../../models/profile';
-import { CommonModule, AsyncPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { authService } from '../../services/authService';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -18,7 +18,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [NzDropDownModule, NzMenuModule, CommonModule, AsyncPipe, NzFormModule, NzButtonModule, NzCheckboxModule, NzInputModule, ReactiveFormsModule],
+  imports: [NzDropDownModule, NzMenuModule, CommonModule, NzFormModule, NzButtonModule, NzCheckboxModule, NzInputModule, ReactiveFormsModule],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
@@ -58,8 +58,5 @@ this.authService.login(username, password).subscribe({
     console.error('login failed', err);
   }
 });  }
-  onSelectProfile(profile: ProfileModel) {
-    console.log(profile);
-    this.sharedService.setSelectedProfile(profile);
-  }
+
 }

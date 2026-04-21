@@ -29,7 +29,6 @@ namespace AssetTrackerWebAPI.Services
                 claims: new[] {
                     new Claim("userId", user.userId ?? string.Empty),
                     new Claim("email", user.email ?? string.Empty),
-                    new Claim("profileId", user.profileId ?? string.Empty)
                 },
                 expires: DateTime.Now.AddHours(1),
                 signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256)
