@@ -21,10 +21,13 @@ namespace AssetTrackerWebAPI.Services
             AttributeDefinitions = new List<AttributeDefinition>
             {
                 new AttributeDefinition { AttributeName = "userId", AttributeType = "S" },
+                new AttributeDefinition { AttributeName = "itemId", AttributeType = "S" },
+
             },
             KeySchema = new List<KeySchemaElement>
             {
-                new KeySchemaElement { AttributeName = "userId", KeyType = "HASH" }
+                new KeySchemaElement { AttributeName = "userId", KeyType = "HASH" },
+                new KeySchemaElement { AttributeName = "itemId", KeyType = "RANGE" }
             },
             BillingMode = BillingMode.PAY_PER_REQUEST
         };

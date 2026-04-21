@@ -5,6 +5,7 @@ import { ProfileService } from '../../services/profileService';
 import { Profile as ProfileModel } from '../../models/profile';
 import { Account as AccountModel } from '../../models/account';
 import { Observable } from 'rxjs';
+import { switchMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-card',
@@ -22,12 +23,11 @@ export class AccountCard implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Wait for profile — everything flows from here
-    this.sharedService.selectedProfile$.subscribe(profile => {
-      if (profile?.profileId) {
-        this.profile = profile;
-        this.accounts$ = this.profileService.getAccounts(profile.profileId);
-      }
-    });
-  }
+  this.accounts$ = this.sharedService.selectedProfile$.pipe(
+    filter(profile => !!profile?.profileId),
+    switchMap(profile => 
+      this.profileService.getAccounts(profile!.profileId)
+    )
+  );
+}
 }

@@ -52,7 +52,6 @@ export class Profile {
 this.authService.login(username, password).subscribe({
   next: () => {
     console.log('logged in');
-    this.router.navigate(['/accounts']); // redirect after login
   },
   error: (err) => {
     console.error('login failed', err);
