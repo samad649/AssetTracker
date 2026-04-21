@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { authService } from './authService';
+import { tap } from 'rxjs';
 declare var Plaid: any; 
 
 @Injectable({
@@ -19,9 +20,15 @@ createLinkToken(userId: string) {
   );
 }
 ExchangePublicToken(userId: string, publicToken: string) {
+  console.log('Sending request:', { userId, publicToken });
+
   return this.http.post<any>(
     `${this.apiUrl}/exchangePublicToken`,
     { userId: userId, publicToken: publicToken }
+  ).pipe(
+    tap(response => {
+      console.log('Response from backend:', response);
+    })
   );
 }
   openPlaidLink(linkToken: string) {
@@ -32,6 +39,7 @@ ExchangePublicToken(userId: string, publicToken: string) {
         console.log('Success:', public_token);
         console.log(metadata);
         this.ExchangePublicToken(this.authService.getUserId(), public_token);
+
       },
 
       onLoad: () => {

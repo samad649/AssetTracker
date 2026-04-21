@@ -21,7 +21,7 @@ namespace AssetTrackerWebAPI.Controllers
             Console.WriteLine("=== CreateLinkToken controller hit ===");
             try
             {
-                var token = await _plaidService.CreateLinkToken(request.UserId);
+                var token = await _plaidService.CreateLinkToken(request.userId);
                 return Ok(new { link_token = token });
             }
             catch (Exception ex)
@@ -35,7 +35,7 @@ namespace AssetTrackerWebAPI.Controllers
         {
             try
             {
-                await _plaidService.ExchangeAndStoreToken(request.PublicToken, request.UserId);
+                await _plaidService.ExchangeAndStoreToken(request.publicToken, request.userId);
                 return Ok(new { success = true });  
             }
             catch (Exception ex)
