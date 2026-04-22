@@ -1,7 +1,7 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 
-
+//FIX THE FOLLOWING TABLES: PlaidItems, 
 namespace AssetTrackerWebAPI.Services
 {
     public class DBinitService: BackgroundService
@@ -20,13 +20,13 @@ namespace AssetTrackerWebAPI.Services
             TableName = tableName,
             AttributeDefinitions = new List<AttributeDefinition>
             {
-                new AttributeDefinition { AttributeName = "userId", AttributeType = "S" },
+                new AttributeDefinition { AttributeName = "profileId", AttributeType = "S" },
                 new AttributeDefinition { AttributeName = "itemId", AttributeType = "S" },
 
             },
             KeySchema = new List<KeySchemaElement>
             {
-                new KeySchemaElement { AttributeName = "userId", KeyType = "HASH" },
+                new KeySchemaElement { AttributeName = "profileId", KeyType = "HASH" },
                 new KeySchemaElement { AttributeName = "itemId", KeyType = "RANGE" }
             },
             BillingMode = BillingMode.PAY_PER_REQUEST
@@ -158,6 +158,21 @@ namespace AssetTrackerWebAPI.Services
                 new KeySchemaElement { AttributeName = "profileId", KeyType = "HASH" },
                 new KeySchemaElement { AttributeName = "accountId", KeyType = "RANGE" }
                 },
+                GlobalSecondaryIndexes = new List<GlobalSecondaryIndex> // ← add this
+                {
+                new GlobalSecondaryIndex
+                {
+                    IndexName = "itemId-index",
+                    KeySchema = new List<KeySchemaElement>
+                    {
+                        new KeySchemaElement { AttributeName = "itemId", KeyType = "HASH" }
+                    },
+                    Projection = new Projection
+                    {
+                        ProjectionType = ProjectionType.ALL 
+                    }
+                }
+            },
             BillingMode = BillingMode.PAY_PER_REQUEST
             };
             try

@@ -7,7 +7,12 @@ public class Account
     public required string profileId { get; set; }
     [DynamoDBRangeKey]
     public required string accountId { get; set; }
-    public string? type { get; set; }
-    public float? balance { get; set; }
-    public string? institution { get; set; }
+    [DynamoDBGlobalSecondaryIndexHashKey("itemId-index")]
+    public string itemId { get; set; } = string.Empty;
+    public string name { get; set; } = string.Empty;
+    public string mask { get; set; } = string.Empty;
+    public string type { get; set; } = string.Empty;
+    public string subtype { get; set; } = string.Empty;
+
+
 }
