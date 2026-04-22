@@ -46,16 +46,13 @@ namespace AssetTrackerWebAPI.Services
         }
         public async Task ExchangeAndStoreToken(string publicToken, string userId)
         {
-            Console.WriteLine($"=== ExchangeAndStoreToken called for userId: {userId} ===");
             var response = await _plaidClient.ItemPublicTokenExchangeAsync(
                 new ItemPublicTokenExchangeRequest
                 {
                     PublicToken = publicToken
                 });
-            Console.WriteLine($"=== 1Plaid response received for userId: {userId} ===");
             if (response.Error != null)
                 throw new Exception($"Plaid error: {response.Error.ErrorMessage}");
-            Console.WriteLine($"=== Plaid token exchange successful for userId: {userId}, itemId: {response.ItemId} ===");
             var item = new PlaidItem
             {
                 userId = userId,
@@ -63,10 +60,7 @@ namespace AssetTrackerWebAPI.Services
                 itemId = response.ItemId,
                 createdAt = DateTime.UtcNow.ToString("o")
             };
-
-            Console.WriteLine($"=== Exchanged public token for userId: {userId}, itemId: {item.itemId} ===");
             await _dynamoDb.SaveAsync(item);
-            Console.WriteLine($"=== Stored Plaid item for userId: {userId}, itemId: {item.itemId} ===");
         }
     }
 }
