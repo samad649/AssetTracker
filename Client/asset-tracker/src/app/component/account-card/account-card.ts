@@ -5,7 +5,7 @@ import { ProfileService } from '../../services/profileService';
 import { Profile as ProfileModel } from '../../models/profile';
 import { Account as AccountModel } from '../../models/account';
 import { Observable } from 'rxjs';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account-card',
@@ -24,8 +24,9 @@ export class AccountCard implements OnInit {
 
   ngOnInit(): void {
   this.accounts$ = this.sharedService.selectedProfile$.pipe(
+    startWith(this.sharedService.getSelectedProfile()), 
     filter(profile => !!profile?.profileId),
-    switchMap(profile => 
+    switchMap(profile =>
       this.profileService.getAccounts(profile!.profileId)
     )
   );
