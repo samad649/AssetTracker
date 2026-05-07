@@ -1,7 +1,6 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.Model;
 
-//FIX THE FOLLOWING TABLES: PlaidItems, 
 namespace AssetTrackerWebAPI.Services
 {
     public class DBinitService: BackgroundService
@@ -66,7 +65,7 @@ namespace AssetTrackerWebAPI.Services
             {
                 new KeySchemaElement { AttributeName = "userId", KeyType = "HASH" }
             },
-            GlobalSecondaryIndexes = new List<GlobalSecondaryIndex> // ← add this
+            GlobalSecondaryIndexes = new List<GlobalSecondaryIndex> 
             {
                 new GlobalSecondaryIndex
                 {
@@ -151,14 +150,15 @@ namespace AssetTrackerWebAPI.Services
             AttributeDefinitions = new List<AttributeDefinition>
                 {
                 new AttributeDefinition { AttributeName = "accountId", AttributeType = "S" },
-                new AttributeDefinition { AttributeName = "profileId", AttributeType = "S" }
+                new AttributeDefinition { AttributeName = "profileId", AttributeType = "S" },
+                new AttributeDefinition { AttributeName = "itemId", AttributeType = "S" } // for GSI
                 },
             KeySchema = new List<KeySchemaElement>
                 {
                 new KeySchemaElement { AttributeName = "profileId", KeyType = "HASH" },
-                new KeySchemaElement { AttributeName = "accountId", KeyType = "RANGE" }
+                new KeySchemaElement { AttributeName = "accountId", KeyType = "RANGE" }      
                 },
-                GlobalSecondaryIndexes = new List<GlobalSecondaryIndex> // ← add this
+                GlobalSecondaryIndexes = new List<GlobalSecondaryIndex> 
                 {
                 new GlobalSecondaryIndex
                 {

@@ -2,20 +2,22 @@ using Going.Plaid;
 using Going.Plaid.Link;
 using Going.Plaid.Entity;
 using Going.Plaid.Item;
-using Amazon.DynamoDBv2.DataModel;
+
+using AssetTrackerWebAPI.Services;
+using System.Security.Claims;
 
 
 namespace AssetTrackerWebAPI.Services
 {
-    public class PlaidService
+    public class plaidService
     {
         private readonly PlaidClient _plaidClient;
-        private readonly IDynamoDBContext _dynamoDb;
+        private readonly ProfileService _profileService;
 
-        public PlaidService(PlaidClient plaidClient, IDynamoDBContext dynamoDb)
+        public plaidService(PlaidClient plaidClient, ProfileService profileService)
         {
             _plaidClient = plaidClient;
-            _dynamoDb = dynamoDb;
+            _profileService = profileService;
         }
 
         public async Task<string> CreateLinkToken(string userId)
@@ -44,23 +46,18 @@ namespace AssetTrackerWebAPI.Services
 
         return response.LinkToken;
         }
-        public async Task ExchangeAndStoreToken(string publicToken, string userId)
+        public async Task<string> ExchangeToken(string publicToken)
         {
             var response = await _plaidClient.ItemPublicTokenExchangeAsync(
                 new ItemPublicTokenExchangeRequest
                 {
                     PublicToken = publicToken
                 });
+
             if (response.Error != null)
                 throw new Exception($"Plaid error: {response.Error.ErrorMessage}");
-            var item = new PlaidItem
-            {
-                userId = userId,
-                accessToken = response.AccessToken,
-                itemId = response.ItemId,
-                createdAt = DateTime.UtcNow.ToString("o")
-            };
-            await _dynamoDb.SaveAsync(item);
+
+            return response.AccessToken;
         }
     }
 }
