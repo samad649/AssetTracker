@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Going.Plaid;
+using Microsoft.OpenApi.Models;
 
 var dynamoConfig = new AmazonDynamoDBConfig
 {
@@ -20,7 +21,35 @@ var builder = WebApplication.CreateBuilder(args);
 // Enable API Explorer
 builder.Services.AddEndpointsApiExplorer();
 // Enable Swagger
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "AssetTracker API", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter: Bearer {your token}"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 // Enable controllers
 builder.Services.AddControllers();
 //Add DynamoDB services to the dependency injection container
@@ -30,7 +59,9 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
         .WithDynamoDBClient(() => sp.GetRequiredService<IAmazonDynamoDB>())
         .Build());
 builder.Services.AddPlaid(builder.Configuration);  
-builder.Services.AddScoped<PlaidService>();   
+builder.Services.AddScoped<accountService>();
+builder.Services.AddScoped<plaidService>();   
+builder.Services.AddScoped<plaidItemService>();
 builder.Services.AddScoped<MockDataService>();      
 builder.Services.AddScoped<ProfileService>();    
 builder.Services.AddScoped<AuthService>();    

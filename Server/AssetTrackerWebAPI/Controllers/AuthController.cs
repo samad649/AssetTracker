@@ -6,6 +6,7 @@ namespace AssetTrackerWebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class AuthController : ControllerBase
     {
         private readonly AuthService _authService;
@@ -17,7 +18,6 @@ namespace AssetTrackerWebAPI.Controllers
             _logger = logger;
         }
 
-        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login([FromBody] LoginRequest loginRequest)
         {
