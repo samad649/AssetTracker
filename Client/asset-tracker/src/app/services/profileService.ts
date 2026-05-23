@@ -3,21 +3,17 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import { Profile } from '../models/profile';
 import { Account } from '../models/account';
-import { Transaction } from '../models/transaction';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
   private apiUrl = 'https://localhost:7141/api/Profile';
-  
+  private accountApiUrl = 'https://localhost:7141/api/Account';
+
   constructor(private http: HttpClient) { }
 
-  getAllProfiles(): Observable<Profile[]> {
-    return this.http.get<Profile[]>(`${this.apiUrl}/all`).pipe(
-      catchError(this.handleError('getAllProfiles'))
-    );
-  }
+ 
 
   getProfile(id: string): Observable<Profile> {
     return this.http.get<Profile>(`${this.apiUrl}/${id}`).pipe(
@@ -25,15 +21,9 @@ export class ProfileService {
     );
   }
 
-  getAccounts(id: string): Observable<Account[]> {
-    return this.http.get<Account[]>(`${this.apiUrl}/${id}/accounts`).pipe(
+  getAccounts(): Observable<Account[]> {
+    return this.http.get<Account[]>(`${this.accountApiUrl}/All`).pipe(
       catchError(this.handleError('getAccounts'))
-    );
-  }
-
-  getTransactions(id: string): Observable<Transaction[]> {
-    return this.http.get<Transaction[]>(`${this.apiUrl}/accounts/${id}/transactions`).pipe(
-      catchError(this.handleError('getTransactions'))
     );
   }
 

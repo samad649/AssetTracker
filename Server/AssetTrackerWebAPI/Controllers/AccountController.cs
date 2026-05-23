@@ -26,8 +26,7 @@ namespace AssetTrackerWebAPI.Controllers
             if (profile == null) return NotFound("Profile not found");
 
             var accounts = await _accountService.GetAllAccounts(profile.profileId);
-            if (accounts == null || !accounts.Any()) return NotFound("No accounts found");
-            return Ok(accounts);
+            return Ok(accounts ?? new List<Account>()); // ← always return 200 with list (empty or not)
         }
         [HttpGet("{accountId}")]
         public async Task<IActionResult> GetAccount(string accountId)

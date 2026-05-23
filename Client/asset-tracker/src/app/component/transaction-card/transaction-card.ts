@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileService } from '../../services/profileService';
-import { SharedService } from '../../services/sharedService';
-import { Transaction as TransactionModel } from '../../models/transaction';
+import { authService } from '../../services/authService';
 import { Profile as ProfileModel } from '../../models/profile';
-import { Account as AccountModel } from '../../models/account';
-import { forkJoin, of} from 'rxjs';
-import { filter, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-transaction-card',
@@ -15,45 +13,15 @@ import { filter, switchMap } from 'rxjs/operators';
   styleUrl: './transaction-card.scss'
 })
 export class TransactionCard implements OnInit {
-  profile: ProfileModel | null = null;
-  accounts: AccountModel[] = [];
-  transactions: TransactionModel[][] = [];
-  loading = true;
-
+  profile$!: Observable<ProfileModel>;
+  UserId!: string;
   constructor(
-    private profileService: ProfileService,
-    private sharedService: SharedService
+        private profileService: ProfileService,
+        private authService: authService
   ) {}
 ngOnInit() {
-  this.sharedService.selectedProfile$.pipe(
+this.UserId = this.authService.getUserId();
+this.profile$ = this.profileService.getProfile(this.UserId);
 
-    filter(profile => !!profile?.profileId),
-
-    switchMap(profile => 
-      this.profileService.getAccounts(profile!.profileId)
-    ),
-
-    switchMap(accounts => {
-      this.accounts = accounts;
-
-      if (accounts.length === 0) return of([]); 
-
-      const requests = accounts.map(account =>
-        this.profileService.getTransactions(account.accountId ?? '')
-      );
-
-      return forkJoin(requests);
-    })
-
-  ).subscribe({
-    next: (allTransactions) => {
-      this.transactions = allTransactions;
-      this.loading = false;
-    },
-    error: (err) => {
-      console.error(err);
-      this.loading = false;
-    }
-  });
 }
 }
