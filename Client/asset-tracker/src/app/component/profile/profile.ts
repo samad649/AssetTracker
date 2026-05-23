@@ -5,9 +5,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { ProfileService } from '../../services/profileService';
 import { SharedService } from '../../services/sharedService';
-import { Profile as ProfileModel } from '../../models/profile';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
 import { authService } from '../../services/authService';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
@@ -30,10 +28,8 @@ export class Profile {
     username: this.fb.control('', [Validators.required]),
     password: this.fb.control('', [Validators.required])
   });
-  profiles$: Observable<ProfileModel[]>;
 
   constructor(private profileService: ProfileService, private sharedService: SharedService, private authService: authService, private router: Router) {
-    this.profiles$ = this.profileService.getAllProfiles();
   }
 
     submitForm() {

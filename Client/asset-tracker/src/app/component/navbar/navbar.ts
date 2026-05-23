@@ -1,15 +1,19 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { authService } from '../../services/authService';
 @Component({
   standalone: true,
   selector: 'app-navbar',
-  imports: [RouterModule, NzIconModule],
+  imports: [CommonModule, RouterModule, NzIconModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })
 export class Navbar {
+
+    constructor(public authService: authService) {
+    }
+
 
 }

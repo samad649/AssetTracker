@@ -24,26 +24,18 @@ export class SharedService {
   private selectedAccountSubject = new BehaviorSubject<Account | null>(null);
   selectedAccount$ = this.selectedAccountSubject.asObservable();
 
-  // Single entry point — everything loads from userId
-  loadUserData() {
-    const userId = this.authService.getUserId();
-    if (!userId) return;
+loadUserData() {
+  const userId = this.authService.getUserId();
+  if (!userId) return;
 
-    this.authService.getUser().subscribe({
-      next: (user) => {
-        if (user?.profileId) {
-          this.profileService.getProfile(user.profileId).subscribe({
-            next: (profile) => {
-              this.selectedProfileSubject.next(profile);
-              console.log('Profile loaded:', profile);
-            },
-            error: (err) => console.error('Failed to fetch profile', err)
-          });
-        }
-      },
-      error: (err) => console.error('Failed to fetch user', err)
-    });
-  }
+  this.profileService.getProfile(userId).subscribe({
+    next: (profile) => {
+      this.selectedProfileSubject.next(profile);
+      console.log('Profile loaded:', profile);
+    },
+    error: (err) => console.error('Failed to fetch profile', err)
+  });
+}
 
   getSelectedProfile(): Profile | null {
     return this.selectedProfileSubject.getValue();
