@@ -37,15 +37,29 @@ namespace AssetTrackerWebAPI.Controllers
         [HttpPost("AddPlaidItem")]
         public async Task<IActionResult> AddPlaidItem([FromBody] PlaidItemRequest plaidItemRequest)
         {
-        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        if (userId == null) return Unauthorized();
+            Console.WriteLine($"Received: publicToken={plaidItemRequest.publicToken}, institutionId={plaidItemRequest.institutionId}, institution={plaidItemRequest.institution}");
+            var userId = User.FindFirst("userId")?.Value; 
+            if (userId == null) return Unauthorized();
 
-        var profile = await _profileService.GetProfileByUserId(userId);
-        if (profile == null) return NotFound("Profile not found");
-        var accessToken = await _plaidService.ExchangeToken(plaidItemRequest.publicToken);
-        await _plaidItemService.AddPlaidItem(accessToken, plaidItemRequest.institutionId, plaidItemRequest.institution, plaidItemRequest.itemId, profile.profileId);
-        return Ok();
+            var profile = await _profileService.GetProfileByUserId(userId);
+            if (profile == null) return NotFound("Profile not found");
 
+            var (accessToken, itemId) = await _plaidService.ExchangeToken(plaidItemRequest.publicToken); 
+
+            await _plaidItemService.AddPlaidItem(
+                accessToken,
+                plaidItemRequest.institutionId,
+                plaidItemRequest.institution,
+                itemId, 
+                profile.profileId
+            );
+             await _plaidService.storeAccountData(
+                accessToken,
+                itemId,
+                profile.profileId,
+                plaidItemRequest.institution
+                );
+                return Ok();
         }
 
     }

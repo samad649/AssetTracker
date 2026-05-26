@@ -1,4 +1,4 @@
-using Amazon.DynamoDBv2;
+
 using Amazon.DynamoDBv2.DataModel;
 namespace AssetTrackerWebAPI.Services
 {
@@ -42,6 +42,8 @@ namespace AssetTrackerWebAPI.Services
             };
 
             await _dynamoDBContext.SaveAsync(plaidItem);    
+
         }
+        
     }
 }

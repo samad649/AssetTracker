@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { authService } from './authService';
-import { tap } from 'rxjs';
+import { PlaidItemService } from './plaidItemService';
 declare var Plaid: any; 
 
 @Injectable({
@@ -11,7 +11,7 @@ export class PlaidService {
 
   private apiUrl = 'https://localhost:7141/api/plaid';
 
-  constructor(private http: HttpClient, private authService: authService) {}
+  constructor(private http: HttpClient, private plaidItemService: PlaidItemService) {}
 
 createLinkToken(userId: string) {
   return this.http.post<any>(
@@ -19,26 +19,22 @@ createLinkToken(userId: string) {
     { userId: userId }  
   );
 }
-ExchangePublicToken(userId: string, publicToken: string) {
-  console.log('Sending request:', { userId, publicToken });
 
-  return this.http.post<any>(
-    `${this.apiUrl}/exchangePublicToken`,
-    { userId: userId, publicToken: publicToken }
-  ).pipe(
-    tap(response => {
-      console.log('Response from backend:', response);
-    })
-  );
-}
-  openPlaidLink(linkToken: string) {
-    const handler = Plaid.create({
-      token: linkToken,
+openPlaidLink(linkToken: string) {
+  const handler = Plaid.create({
+    token: linkToken,
 
       onSuccess: (public_token: string, metadata: any) => {
         console.log('Success:', public_token);
         console.log(metadata);
-        this.ExchangePublicToken(this.authService.getUserId(), public_token);
+        this.plaidItemService.addPlaidItem(public_token, metadata).subscribe({
+          next: (response) => {
+            console.log('Item added successfully:', response);
+          },
+          error: (error) => {
+            console.error('Error adding item:', error);
+          }
+        });
 
       },
 
