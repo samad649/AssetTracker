@@ -43,7 +43,7 @@ export class authService {
     localStorage.removeItem('token');
     this.currentUserId.next(null);
   }
-
+//returns null if token doesnt exist or is invalid/expired
   getToken(): string | null {
       const token = localStorage.getItem('token');
 

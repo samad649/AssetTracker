@@ -1,4 +1,5 @@
 
+<div *ngIf="!isLoggedIn else loggedInContent">
 <div class="login-container">
 <form nz-form nzLayout="vertical" [formGroup]="validateForm" (ngSubmit)="submitForm()">
   <nz-form-item>
@@ -20,3 +21,14 @@
       </nz-form-item>
 </form>
 </div>
+</div>
+
+<ng-template #loggedInContent>
+  <div class="logout-container">
+  <nz-form-item>
+      <nz-form-control>
+        <button nz-button nzType="primary" (click)="logout()">Log out</button>
+      </nz-form-control>
+  </nz-form-item>
+  </div>
+</ng-template>

@@ -21,7 +21,7 @@ import { Router } from '@angular/router';
   styleUrl: './profile.scss',
 })
 export class Profile {
-
+  isLoggedIn = false;
   private fb = inject(NonNullableFormBuilder);
 
   validateForm = this.fb.group({
@@ -30,6 +30,9 @@ export class Profile {
   });
 
   constructor(private profileService: ProfileService, private sharedService: SharedService, private authService: authService, private router: Router) {
+    this.authService.isLoggedIn$.subscribe(loggedIn => {
+        this.isLoggedIn = loggedIn;
+    });  
   }
 
     submitForm() {
@@ -45,13 +48,19 @@ export class Profile {
     const password = this.validateForm.get('password')!.value;
 
     console.log(username, password);
-this.authService.login(username, password).subscribe({
-  next: () => {
-    console.log('logged in');
-  },
-  error: (err) => {
-    console.error('login failed', err);
-  }
-});  }
+    this.authService.login(username, password).subscribe({
+      next: () => {
+        console.log('logged in');
+      },
+      error: (err) => {
+        console.error('login failed', err);
+      }
+    }); 
+   }
+   logout(){
+    this.authService.logout();
+   }
+
+
 
 }

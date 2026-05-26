@@ -13,6 +13,8 @@ public class Account
     public string mask { get; set; } = string.Empty;
     public string type { get; set; } = string.Empty;
     public string subtype { get; set; } = string.Empty;
-
-
+    public decimal? currentBalance { get; set; }
+    public decimal? availableBalance { get; set; }
+    public string lastUpdated { get; set; } = string.Empty;
+    public string institutionName { get; set; } = string.Empty; 
 }
