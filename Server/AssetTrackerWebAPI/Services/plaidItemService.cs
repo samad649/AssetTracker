@@ -44,6 +44,25 @@ namespace AssetTrackerWebAPI.Services
             await _dynamoDBContext.SaveAsync(plaidItem);    
 
         }
-        
+        public async Task<string?> GetCursor(string profileId, string itemId)
+        {
+            var plaidItem = await _dynamoDBContext.LoadAsync<PlaidItem>(profileId, itemId);
+            
+            if (plaidItem == null)
+                Console.WriteLine($"No Plaid item found for profileId: {profileId}, itemId: {itemId}");
+            
+            return plaidItem?.transactionCursor;
+        }
+        public async Task UpdateCursor(string profileId, string itemId, string? newCursor)
+        {
+            var plaidItem = await _dynamoDBContext.LoadAsync<PlaidItem>(profileId, itemId);
+            if (plaidItem == null)
+            {
+                Console.WriteLine($"No Plaid item found for profileId: {profileId}, itemId: {itemId}");
+                return;  
+            }
+            plaidItem.transactionCursor = newCursor;
+            await _dynamoDBContext.SaveAsync(plaidItem);
+        }
     }
 }
