@@ -11,4 +11,8 @@ public class PlaidItem
     public string institutionId { get; set; } = string.Empty;
     public string institution { get; set; } = string.Empty;
     public string createdAt { get; set; } = DateTime.UtcNow.ToString("o");
+
+    //used for pagination in transactions endpoint
+    public string? transactionCursor { get; set; }  
+    public DateTime? lastSynced { get; set; }    
 }

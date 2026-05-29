@@ -3,6 +3,7 @@ using Going.Plaid.Link;
 using Going.Plaid.Entity;
 using Going.Plaid.Item;
 using Going.Plaid.Accounts;
+using Going.Plaid.Transactions;
 using Amazon.DynamoDBv2.DataModel;
 
 namespace AssetTrackerWebAPI.Services
@@ -11,11 +12,13 @@ namespace AssetTrackerWebAPI.Services
     {
         private readonly IDynamoDBContext _dynamoDBContext;
         private readonly PlaidClient _plaidClient;
+        private readonly plaidItemService _plaidItemService;
 
-        public plaidService(PlaidClient plaidClient, IDynamoDBContext dynamoDBContext)
+        public plaidService(PlaidClient plaidClient, IDynamoDBContext dynamoDBContext, plaidItemService plaidItemService)
         {
             _plaidClient = plaidClient;
             _dynamoDBContext = dynamoDBContext;
+            _plaidItemService = plaidItemService;
         }
 
         public async Task<string> CreateLinkToken(string userId)
@@ -89,5 +92,65 @@ namespace AssetTrackerWebAPI.Services
             }
 
         }
-    }
+        // Store transaction data for all accounts linked to a Plaid item
+        public async Task storeTransactionData(string accessToken, string itemId, string profileId)
+        {
+            List<Transaction> transactions = new List<Transaction>();
+            var removedList = new List<(string AccountId, string TransactionId)>();
+
+            bool transactionsRemaining = true;
+            string? cursor = await _plaidItemService.GetCursor(profileId, itemId); 
+
+            while (transactionsRemaining)
+            {
+            var response = await _plaidClient.TransactionsSyncAsync(new TransactionsSyncRequest
+                {
+                    AccessToken = accessToken,
+                    Cursor = cursor,
+                    Count = 500,
+                });
+            if (response.Error != null){throw new Exception($"Plaid error: {response.Error.ErrorMessage}");}
+
+            transactions.AddRange(response.Added.Concat(response.Modified).Select(MapTransaction));
+            removedList.AddRange(response.Removed.Select(r => (r.AccountId!, r.TransactionId!)));
+
+            cursor = response.NextCursor;
+            transactionsRemaining = response.HasMore;
+            }
+            await _plaidItemService.UpdateCursor(profileId, itemId, cursor);
+            // Save transactions to DynamoDB
+            foreach (var transaction in transactions)
+            {
+                await _dynamoDBContext.SaveAsync(transaction);
+            }
+            // Remove deleted transactions from DynamoDB
+            foreach (var (accountId, transactionId) in removedList)
+            {
+                await _dynamoDBContext.DeleteAsync<Transaction>(accountId, transactionId);
+            }
+
+        }
+        private Transaction MapTransaction(Going.Plaid.Entity.Transaction t)
+        {
+            return new Transaction
+            {
+                accountId = t.AccountId!,
+                transactionId = t.TransactionId!,
+                amount = t.Amount.HasValue ? (double)Math.Round(t.Amount.Value, 2) : null,                
+                ISOCurrencyCode = t.IsoCurrencyCode,
+                merchantName = t.MerchantName,
+                merchantEntityId = t.MerchantEntityId,
+                logoUrl = t.LogoUrl,
+                date = t.Date?.ToDateTime(TimeOnly.MinValue),
+                authorizedDate = t.AuthorizedDate?.ToDateTime(TimeOnly.MinValue),
+                pending = t.Pending,
+                pendingTransactionId = t.PendingTransactionId,
+                categoryPrimary = t.PersonalFinanceCategory?.Primary,
+                categoryDetailed = t.PersonalFinanceCategory?.Detailed,
+                categoryConfidence = t.PersonalFinanceCategory?.ConfidenceLevel,
+                categoryIconUrl = t.PersonalFinanceCategoryIconUrl,
+                paymentChannel = t.PaymentChannel?.ToString()
+            };
+        }
+     }
 }
