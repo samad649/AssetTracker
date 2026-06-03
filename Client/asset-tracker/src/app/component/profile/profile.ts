@@ -3,7 +3,6 @@ import {Validators, ReactiveFormsModule} from '@angular/forms';
 import { NonNullableFormBuilder } from '@angular/forms';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { ProfileService } from '../../services/profileService';
 import { SharedService } from '../../services/sharedService';
 import { CommonModule } from '@angular/common';
 import { authService } from '../../services/authService';
@@ -12,6 +11,9 @@ import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { Router } from '@angular/router';
+import { Profile as ProfileModel } from '../../models/profile';
+import { Observable } from 'rxjs';
+import { OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-profile',
@@ -20,7 +22,9 @@ import { Router } from '@angular/router';
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
 })
-export class Profile {
+export class Profile implements OnInit {
+  profile$!: Observable<ProfileModel | null>;
+  UserId!: string;
   isLoggedIn = false;
   private fb = inject(NonNullableFormBuilder);
 
@@ -29,10 +33,14 @@ export class Profile {
     password: this.fb.control('', [Validators.required])
   });
 
-  constructor(private profileService: ProfileService, private sharedService: SharedService, private authService: authService, private router: Router) {
+  constructor(private sharedService: SharedService, private authService: authService, private router: Router) {
     this.authService.isLoggedIn$.subscribe(loggedIn => {
         this.isLoggedIn = loggedIn;
     });  
+  }
+  ngOnInit(): void {
+      this.UserId = this.authService.getUserId();
+      this.profile$ = this.sharedService.selectedProfile$;
   }
 
     submitForm() {

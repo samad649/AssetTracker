@@ -12,6 +12,7 @@ public class Transaction
 
     // --- Core ---
     public double? amount { get; set; }
+    public string? name { get; set; }                   // Raw bank description, fallback when no merchantName
     public string? ISOCurrencyCode { get; set; }        // "USD"
     public string? merchantName { get; set; }           // Enriched: "Walmart"
     public string? merchantEntityId { get; set; }       // Stable ID — useful for grouping spend by merchant

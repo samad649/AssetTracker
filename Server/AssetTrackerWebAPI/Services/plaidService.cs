@@ -110,7 +110,7 @@ namespace AssetTrackerWebAPI.Services
                     Count = 500,
                 });
             if (response.Error != null){throw new Exception($"Plaid error: {response.Error.ErrorMessage}");}
-
+            Console.WriteLine(response);
             transactions.AddRange(response.Added.Concat(response.Modified).Select(MapTransaction));
             removedList.AddRange(response.Removed.Select(r => (r.AccountId!, r.TransactionId!)));
 
@@ -136,19 +136,20 @@ namespace AssetTrackerWebAPI.Services
             {
                 accountId = t.AccountId!,
                 transactionId = t.TransactionId!,
-                amount = t.Amount.HasValue ? (double)Math.Round(t.Amount.Value, 2) : null,                
-                ISOCurrencyCode = t.IsoCurrencyCode,
-                merchantName = t.MerchantName,
-                merchantEntityId = t.MerchantEntityId,
-                logoUrl = t.LogoUrl,
+                name = string.IsNullOrWhiteSpace(t.Name) ? null : t.Name,
+                amount = t.Amount.HasValue ? (double)Math.Round(t.Amount.Value, 2) : null,
+                ISOCurrencyCode = string.IsNullOrWhiteSpace(t.IsoCurrencyCode) ? null : t.IsoCurrencyCode,
+                merchantName = string.IsNullOrWhiteSpace(t.MerchantName) ? null : t.MerchantName,
+                merchantEntityId = string.IsNullOrWhiteSpace(t.MerchantEntityId) ? null : t.MerchantEntityId,
+                logoUrl = string.IsNullOrWhiteSpace(t.LogoUrl) ? null : t.LogoUrl,
                 date = t.Date?.ToDateTime(TimeOnly.MinValue),
                 authorizedDate = t.AuthorizedDate?.ToDateTime(TimeOnly.MinValue),
                 pending = t.Pending,
-                pendingTransactionId = t.PendingTransactionId,
-                categoryPrimary = t.PersonalFinanceCategory?.Primary,
-                categoryDetailed = t.PersonalFinanceCategory?.Detailed,
-                categoryConfidence = t.PersonalFinanceCategory?.ConfidenceLevel,
-                categoryIconUrl = t.PersonalFinanceCategoryIconUrl,
+                pendingTransactionId = string.IsNullOrWhiteSpace(t.PendingTransactionId) ? null : t.PendingTransactionId,
+                categoryPrimary = string.IsNullOrWhiteSpace(t.PersonalFinanceCategory?.Primary) ? null : t.PersonalFinanceCategory?.Primary,
+                categoryDetailed = string.IsNullOrWhiteSpace(t.PersonalFinanceCategory?.Detailed) ? null : t.PersonalFinanceCategory?.Detailed,
+                categoryConfidence = string.IsNullOrWhiteSpace(t.PersonalFinanceCategory?.ConfidenceLevel) ? null : t.PersonalFinanceCategory?.ConfidenceLevel,
+                categoryIconUrl = string.IsNullOrWhiteSpace(t.PersonalFinanceCategoryIconUrl) ? null : t.PersonalFinanceCategoryIconUrl,
                 paymentChannel = t.PaymentChannel?.ToString()
             };
         }

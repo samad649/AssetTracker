@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using AssetTrackerWebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 namespace AssetTrackerWebAPI.Controllers
 {
     [ApiController]
