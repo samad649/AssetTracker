@@ -60,6 +60,7 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
         .Build());
 builder.Services.AddPlaid(builder.Configuration);  
 builder.Services.AddScoped<accountService>();
+builder.Services.AddScoped<transactionService>();
 builder.Services.AddScoped<plaidService>();   
 builder.Services.AddScoped<plaidItemService>();
 builder.Services.AddScoped<MockDataService>();      

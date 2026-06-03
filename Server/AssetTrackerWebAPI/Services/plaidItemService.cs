@@ -19,6 +19,16 @@ namespace AssetTrackerWebAPI.Services
            }
            return plaidItems;
         }
+        public async Task<IEnumerable<PlaidItem>> GetItemsByProfile(string profileId)
+        {
+            var plaidItems = await _dynamoDBContext.QueryAsync<PlaidItem>(profileId).GetRemainingAsync();
+            if (plaidItems == null || !plaidItems.Any())
+            {
+                Console.WriteLine($"No Plaid items found for profileId: {profileId}");
+                return Enumerable.Empty<PlaidItem>();
+            }
+            return plaidItems;
+        }
         public async Task<PlaidItem?> GetPlaidItem(string profileId, string itemId)
         {
             var plaidItem = await _dynamoDBContext.LoadAsync<PlaidItem>(profileId, itemId);

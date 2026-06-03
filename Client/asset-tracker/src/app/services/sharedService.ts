@@ -10,11 +10,12 @@ import { authService } from './authService';
 })
 export class SharedService {
 
-  constructor(private profileService: ProfileService, private authService: authService) {
-    if (this.authService.isLoggedIn()) {
-      this.loadUserData();
-    }
-  }
+ constructor(private profileService: ProfileService, private authService: authService) {
+  this.authService.isLoggedIn$.subscribe(isLoggedIn => {
+    if (isLoggedIn) this.loadUserData();
+    else this.clearState();
+  });
+}
 
   // ---------------PROFILES------------------ //
   private selectedProfileSubject = new BehaviorSubject<Profile | null>(null);

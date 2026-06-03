@@ -1,6 +1,8 @@
-<ng-container *ngIf="profile$ | async as profile">
-  <p>First Name: {{ profile.firstName }}</p>
-  <p>Last Name: {{ profile.lastName }}</p>
-  <p>Profile ID: {{ profile.profileId }}</p>
-  <p>User ID: {{ UserId }}</p>
-</ng-container>
+<div>
+  <h3>Transactions</h3>
+  <ul>
+   <li *ngFor="let transaction of transactions">
+  {{ transaction.merchantName || transaction.name }} - {{ transaction.amount }}
+    </li>
+  </ul>
+</div>
