@@ -19,14 +19,17 @@ animation: pan 30s linear infinite alternate,
   position: absolute;
   inset: 0;
   background: transparent;
-  backdrop-filter: blur(0px) brightness(1);
-  transition: backdrop-filter 1.5s ease-in-out;
+  transition: background 1.5s ease-in-out;
   pointer-events: none;
   z-index: 0;
 }
+
 .main.blurred::before {
-  backdrop-filter: blur(10px) brightness(0.6);
+  background: rgba(8, 17, 27, 0.96);
+
+
 }
+
 .main.blurred {
   animation: none;
   transition: 3s ease-in-out;

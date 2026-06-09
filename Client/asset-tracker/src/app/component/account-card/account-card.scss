@@ -1,0 +1,51 @@
+.card-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+
+
+    ::ng-deep .ant-card {
+        width: 325px !important;
+        background: rgb(0, 0, 0,.03) !important;
+        border-color: #1fe5ff !important;
+        border-radius: 12px !important;
+        box-shadow: 0 0 20px #1fe5ff !important;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            box-shadow: 0 0 30px #1fe5ff !important;
+            transform: translateY(-15px);
+        }
+    }
+    ::ng-deep .ant-card-head{
+        font-size: 1.5rem;
+        border-bottom: 3px solid rgba(31, 229, 255, 0.2);
+        }
+    ::ng-deep .ant-card-head *{
+        background: transparent;
+        color: aliceblue !important;
+        }
+        .card-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;  // aligns to top instead of center
+        }
+
+        .type {
+        font-size: 0.875rem;
+        opacity: 0.5;
+        }
+
+        .amount {
+        padding-top: 20px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        }
+    ::ng-deep .ant-card-body *{
+        color: aliceblue !important;
+        }
+
+    ::ng-deep .ant-card-extra *{
+        color: aliceblue !important; 
+        }
+}
