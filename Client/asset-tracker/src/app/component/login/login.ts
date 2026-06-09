@@ -14,16 +14,18 @@ import { Router } from '@angular/router';
 import { Profile as ProfileModel } from '../../models/profile';
 import { Observable } from 'rxjs';
 import { OnInit } from '@angular/core';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-login',
   standalone: true,
-  imports: [NzDropDownModule, NzMenuModule, CommonModule, NzFormModule, NzButtonModule, NzCheckboxModule, NzInputModule, ReactiveFormsModule],
-  templateUrl: './profile.html',
-  styleUrl: './profile.scss',
+  imports: [NzDropDownModule, NzMenuModule, CommonModule, NzFormModule, NzButtonModule, NzCheckboxModule, NzInputModule, ReactiveFormsModule, NzDescriptionsModule],
+  templateUrl: './login.html',
+  styleUrl: './login.scss',
 })
-export class Profile implements OnInit {
+export class Login implements OnInit {
   profile$!: Observable<ProfileModel | null>;
+  user$ !: Observable<any>;
   UserId!: string;
   isLoggedIn = false;
   private fb = inject(NonNullableFormBuilder);
@@ -39,6 +41,7 @@ export class Profile implements OnInit {
     });  
   }
   ngOnInit(): void {
+      this.user$ = this.authService.selectedUser$;
       this.UserId = this.authService.getUserId();
       this.profile$ = this.sharedService.selectedProfile$;
   }
@@ -68,7 +71,5 @@ export class Profile implements OnInit {
    logout(){
     this.authService.logout();
    }
-
-
 
 }

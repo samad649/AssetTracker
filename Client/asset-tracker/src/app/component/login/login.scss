@@ -1,0 +1,194 @@
+.login-container {
+  font-size: 1.5rem;
+  letter-spacing: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 15vh;
+  form {
+    width: 100%;
+    max-width: 360px; 
+  }
+  .login-title {
+    margin-bottom: 40px;
+  }
+
+  nz-form-item {
+    margin-bottom: 40px !important;
+  }
+  * {
+    background: transparent !important;
+    color: aliceblue !important;
+  }
+
+  .ant-input {
+    border-color: rgba(36, 162, 253, 0.2) !important;
+    font-size: 20px;
+    padding: 10px 14px;
+  }
+
+  .ant-input-affix-wrapper {
+    font-size: 20px;
+    padding: 10px 14px !important;
+    border-color: rgba(36, 162, 253, 0.2) !important;
+
+    .ant-input {
+      font-size: 20px;
+      padding: 0 !important;
+    }
+  }
+
+  .ant-btn-primary {
+    width: 60%;
+    display: block;
+    margin: 0 auto; 
+    color: aliceblue;
+    background: #135a67 !important;
+    border-color: #2ea0ca;
+    filter: brightness(1.2) saturate(1.5) drop-shadow(0 0 4px rgba(46, 196, 182, 0.8));
+    border-radius: 10px;
+    padding: 0 32px;
+    height: 44px;
+    font-size: 1rem;
+    animation: fadeUp 1s ease-out 0.6s forwards;
+    opacity: 0;
+    transition: all 0.2s ease;
+    &:hover {
+      filter: brightness(1.4) saturate(1.6) drop-shadow(0 0 8px rgba(46, 196, 182, 0.8));
+      transform: scale(1.05) !important;
+    }
+  }
+}
+
+.logged-in-wrapper {
+  min-height: 100vh;
+  padding: 5vh 0 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-title {
+  font-family: 'Quantico';
+  font-size: 40px;
+  color: aliceblue;
+  margin-bottom: 12px;
+  width: 75%;
+  align-self: center;
+  text-align: left;
+  opacity: 0;
+  animation: fadeUp 0.5s ease-out 0.1s forwards;
+}
+
+.logout-container {
+  //background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  font-size: 1.5rem;
+  letter-spacing: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 75%;
+  padding: 30px 30px;
+  //border: 1px solid rgba(31, 229, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 0 40px rgba(31, 229, 255, 0.05);
+
+  nz-descriptions {
+    margin-bottom: 5%;
+    width: 90%;
+    opacity: 0;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+    &:nth-child(1) { animation: fadeUp 0.5s ease-out 0.2s forwards; }
+    &:nth-child(2) { animation: fadeUp 0.5s ease-out 0.3s forwards; }
+    &:nth-child(3) { animation: fadeUp 0.5s ease-out 0.4s forwards; }
+    &:nth-child(4) { animation: fadeUp 0.5s ease-out 0.5s forwards; }
+    &:nth-child(5) { animation: fadeUp 0.5s ease-out 0.6s forwards; }
+    &:nth-child(6) { animation: fadeUp 0.5s ease-out 0.7s forwards; }
+
+    &:hover {
+      box-shadow: 0 0 20px rgba(31, 229, 255, 0.2);
+      transform: translateY(-2px);
+    }
+  }
+
+  ::ng-deep .ant-descriptions-item-label {
+    width: 180px !important;
+    min-width: 100px !important;
+    color: aliceblue !important;
+    background: transparent !important;
+    //background: rgb(4, 19, 33) !important;
+    font-size: 20px !important;
+    padding: 20px 20px !important;
+  }
+
+  ::ng-deep .ant-descriptions-item-content {
+    color: aliceblue !important;
+    font-size: 20px !important;
+    padding: 20px 20px !important;
+  }
+
+  ::ng-deep .ant-descriptions-view {
+    border-color: #1fe5ff !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+  }
+
+  ::ng-deep .ant-descriptions-bordered .ant-descriptions-view > table {
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    border-radius: 12px !important;
+  }
+
+  ::ng-deep .ant-descriptions-bordered .ant-descriptions-item-label,
+  ::ng-deep .ant-descriptions-bordered .ant-descriptions-item-content {
+    border-color: #1fe5ff !important;
+    //background-color: rgb(4, 19, 33) !important;
+  }
+
+  .ant-descriptions {
+    background: transparent !important;
+    width: 90%;
+  }
+
+  .button-row {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 20px;
+    opacity: 0;
+    animation: fadeUp 0.5s ease-out 0.8s forwards;
+
+    .ant-btn-primary {
+      margin: 0;
+    }
+  }
+
+  .ant-btn-primary {
+    display: block;
+    margin: 0 auto; 
+    color: aliceblue;
+    background: #135a67 !important;
+    border-color: #2ea0ca;
+    filter: brightness(1.2) saturate(1.5) drop-shadow(0 0 4px rgba(46, 196, 182, 0.8));
+    border-radius: 10px;
+    padding: 0 32px;
+    height: 44px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+    &:hover {
+      filter: brightness(1.4) saturate(1.6) drop-shadow(0 0 8px rgba(46, 196, 182, 0.8));
+      transform: scale(1.05) !important;
+      box-shadow: 0 0 20px rgba(31, 229, 255, 0.3);
+    }
+  }
+}
+
+@keyframes fadeUp {
+  0%   { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
