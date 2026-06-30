@@ -25,5 +25,9 @@ namespace AssetTrackerWebAPI.Services
 
             return await _dynamoDBContext.LoadAsync<Profile>(user.profileId);
         }
+        public async Task CreateProfile(Profile profile)
+        {
+            await _dynamoDBContext.SaveAsync(profile);
+        }
     }
 }

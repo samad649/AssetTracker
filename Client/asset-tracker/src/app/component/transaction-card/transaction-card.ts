@@ -5,10 +5,10 @@ import { Profile as ProfileModel } from '../../models/profile';
 import { Observable } from 'rxjs';
 import { TransactionService } from '../../services/transactionService';
 import { Transaction } from '../../models/transaction';
-
+import { NzTableModule } from 'ng-zorro-antd/table';
 @Component({
   selector: 'app-transaction-card',
-  imports: [CommonModule],
+  imports: [CommonModule, NzTableModule],
   templateUrl: './transaction-card.html',
   styleUrl: './transaction-card.scss'
 })

@@ -15,11 +15,12 @@ import { Profile as ProfileModel } from '../../models/profile';
 import { Observable } from 'rxjs';
 import { OnInit } from '@angular/core';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [NzDropDownModule, NzMenuModule, CommonModule, NzFormModule, NzButtonModule, NzCheckboxModule, NzInputModule, ReactiveFormsModule, NzDescriptionsModule],
+  imports: [NzDropDownModule, NzMenuModule, CommonModule, NzFormModule, NzButtonModule, NzCheckboxModule, NzInputModule, ReactiveFormsModule, NzDescriptionsModule, RouterModule],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })

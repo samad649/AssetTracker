@@ -1,8 +1,21 @@
-<div>
-  <h3>Transactions</h3>
-  <ul>
-   <li *ngFor="let transaction of transactions">
-  {{ transaction.merchantName || transaction.name }} - {{ transaction.amount }}
-    </li>
-  </ul>
+<div class="transaction-table">
+<nz-table #transactionTable [nzPageSize]="25" [nzScroll]="{ y: '500px' }" [nzData]="transactions">
+    <thead>
+        <tr>
+            <th>Merchant</th>
+            <th>Amount</th>
+            <th>Date</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let transaction of transactionTable.data">  <!-- ✅ not transactions -->
+            <td>{{ transaction.merchantName || transaction.name }}</td>
+            <td>{{ transaction.amount | currency }}</td>
+            <td>{{ transaction.date | date }}</td>
+            <td>{{ transaction.categoryPrimary || "N/A" }}</td>
+        </tr>
+    </tbody>
+</nz-table>
 </div>
+

@@ -1,12 +1,14 @@
 .card-container{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
-
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    justify-content:center;
+    gap: 1.075%;
+    row-gap: 20px;
+    margin: 5%;
 
     ::ng-deep .ant-card {
-        width: 325px !important;
-        background: rgb(0, 0, 0,.03) !important;
+        width: 320px !important;
+        background: rgba(7, 168, 255, 0.087) !important;
         border-color: #1fe5ff !important;
         border-radius: 12px !important;
         box-shadow: 0 0 20px #1fe5ff !important;
@@ -19,7 +21,7 @@
     }
     ::ng-deep .ant-card-head{
         font-size: 1.5rem;
-        border-bottom: 3px solid rgba(31, 229, 255, 0.2);
+        border-bottom: 2px solid rgba(31, 229, 255,.2) !important;
         }
     ::ng-deep .ant-card-head *{
         background: transparent;
@@ -38,7 +40,7 @@
 
         .amount {
         padding-top: 20px;
-        font-size: 1.5rem;
+        font-size: 2.0rem;
         font-weight: bold;
         }
     ::ng-deep .ant-card-body *{
@@ -48,4 +50,35 @@
     ::ng-deep .ant-card-extra *{
         color: aliceblue !important; 
         }
+        .add-account{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #1fe5ff !important;
+            border-radius: 12px !important;
+            width: 320px !important;
+            box-shadow: 0 0 20px #1fe5ff !important;
+
+            .plus-icon{
+                font-size: 5rem;
+                color: rgb(32, 151, 255) !important;
+                    ::ng-deep svg {
+                        width: 1em;        // inherits font-size from parent
+                        height: 1em;
+                        fill: rgba(7, 187, 190, 0.448) !important;
+                    }
+            }
+                &:hover{
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    box-shadow: 0 0 30px #1fe5ff !important;
+                    transform: translateY(-15px);
+
+                    .plus-icon{
+                        transition: all 0.3s ease;
+                        scale: 1.3;
+                    }
+                }
+        }
+
 }

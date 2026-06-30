@@ -64,7 +64,7 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: gradientSlide 2s linear infinite, glowPulse 2s ease-in-out infinite;
-  font-size: larger;
+  font-size: 1.2em;
   border-radius: 25px;
   padding: 6px 15px;
 }
@@ -87,20 +87,16 @@ margin-right: 20px;
 
 .user-icon {
     color: aliceblue;
-    font-size: larger;
-  transition: all 0.2s ease;
-  font-size: 24px;
-
-  &:hover {
-    animation: colorLoop 2s ease-in-out infinite;    
-    cursor: pointer;
-  }
+    font-size: 24px;
+    transition: transform 1.25s ease, border-radius 1.25s ease;  // ✅ both transition together
 }
 
 .navbar-link.active .user-icon {
-  transform: scale(1.3);
-  animation: colorLoop 1.5s ease-in-out infinite;  
-  text-shadow: 0 0 8px rgba(46, 196, 182, 0.6);
+    transform: scale(1.3);
+    border-radius: 50%;                                          // or whatever radius you have
+    transition: transform 1.25s ease, border-radius 1.25s ease;  // ✅ both transition together
+    animation: colorLoop 1.5s ease-in-out infinite;
+    text-shadow: 0 0 8px rgba(46, 196, 182, 0.6);
 }
 @keyframes gradientSlide {
   0%   { background-position: 0% center; }
