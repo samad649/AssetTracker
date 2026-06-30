@@ -1,0 +1,74 @@
+.register-container {
+  font-size: 1.5rem;
+  letter-spacing: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding-top: 15vh;
+  form {
+    width: 100%;
+    max-width: 360px; 
+  }
+  .login-title {
+    margin-bottom: 40px;
+  }
+
+  nz-form-item {
+    margin-bottom: 40px !important;
+  }
+  * {
+    background: transparent !important;
+    color: aliceblue !important;
+  }
+
+  .ant-input {
+    border-color: rgba(36, 162, 253, 0.2) !important;
+    font-size: 20px;
+    padding: 10px 14px;
+  }
+
+  .ant-input-affix-wrapper {
+    font-size: 20px;
+    padding: 10px 14px !important;
+    border-color: rgba(36, 162, 253, 0.2) !important;
+
+    .ant-input {
+      font-size: 20px;
+      padding: 0 !important;
+    }
+  }
+
+  .ant-btn-primary {
+    width: 60%;
+    display: block;
+    margin: 0 auto; 
+    color: aliceblue;
+    background: #135a67 !important;
+    border-color: #2ea0ca;
+    filter: brightness(1.2) saturate(1.5) drop-shadow(0 0 4px rgba(46, 196, 182, 0.8));
+    border-radius: 10px;
+    padding: 0 32px;
+    height: 44px;
+    font-size: 1rem;
+    animation: fadeUp 1s ease-out 0.6s forwards;
+    opacity: 1;
+    transition: all 0.2s ease;
+    &:hover {
+      filter: brightness(1.4) saturate(1.6) drop-shadow(0 0 8px rgba(46, 196, 182, 0.8));
+      transform: scale(1.05) !important;
+    }
+  }
+
+  ::ng-deep {
+    input:-webkit-autofill,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus,
+    input:-webkit-autofill:active {
+        -webkit-box-shadow: 0 0 0 1000px transparent inset !important;  // ✅ fakes background color
+        -webkit-text-fill-color: aliceblue !important;                           // ✅ keeps text color
+        caret-color: aliceblue;                                                  // ✅ cursor color
+        transition: background-color 5000s ease-in-out 0s;                      // ✅ delays browser override
+    }
+}
+}

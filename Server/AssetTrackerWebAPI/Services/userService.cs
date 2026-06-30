@@ -1,5 +1,5 @@
-using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Microsoft.AspNetCore.Mvc;
 namespace AssetTrackerWebAPI.Services
 {
     public class UserService{
@@ -23,5 +23,10 @@ namespace AssetTrackerWebAPI.Services
             
             return user.FirstOrDefault()?.userId;
         }
+        public async Task CreateUser(User user)
+        {
+             await _dynamoDBContext.SaveAsync(user);
+        }
+        
     }
 }

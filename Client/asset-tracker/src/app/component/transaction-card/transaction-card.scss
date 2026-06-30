@@ -1,0 +1,89 @@
+.transaction-table{
+    margin: 0 auto;
+    padding: 0;
+    width: 60%;
+    margin-top: 50px;
+  ::ng-deep {
+    // Table background
+    .ant-table {
+    border:  2px solid rgba(31, 229, 255, 0.3) !important;
+    border-radius: 20px !important;
+    background: rgba(0, 0, 0, 0.25) !important;
+    box-shadow: 0 0 20px rgba(31, 229, 255, 0.3);
+    }
+
+    // Header
+    .ant-table-thead > tr > th {
+     background: rgba(0, 0, 0, 0.25) !important;
+      color: aliceblue !important;
+      border-radius: 20px 20px 0 0 !important;
+      border-bottom: 0px solid rgba(31, 229, 255, 0.3) !important;
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+    }
+
+    // Rows
+    .ant-table-tbody > tr > td {
+      color: aliceblue !important;
+      border-bottom: 0px solid rgba(31, 229, 255, 0.1) !important;
+    }
+
+    // Row hover
+    .ant-table-tbody > tr:hover > td {
+      background: rgba(31, 229, 255, 0.05) !important;
+      cursor: pointer;
+    }
+        .ant-pagination{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    // Pagination
+    .ant-pagination-item a,
+    .ant-pagination-prev button,
+    .ant-pagination-next button {
+      background: rgb(0, 0, 0);
+      color: aliceblue !important;
+        border-color: rgba(0, 225, 255, 0.518) !important;
+    }
+.ant-pagination-item {
+    background: rgb(0, 0, 0);
+    border-color: rgba(255, 255, 255, 0.2) !important;
+
+    &:hover {
+        opacity: 0.5;
+        border-color: #ff00d9 !important;       
+        a { color: #ff00d9 !important; }
+    }
+
+    a { color: aliceblue !important; }
+}
+
+.ant-pagination-prev,
+.ant-pagination-next {
+    &:hover button {
+        border-color: #00e9f9 !important;        
+        color: #00e9f9 !important;
+        box-shadow: 0 0 5px #00e9f9 !important;
+    }
+
+    button {
+        background: rgb(0, 0, 0);
+        color: aliceblue !important;
+    }
+}
+
+.ant-pagination-item-active {
+    background: rgba(31, 229, 255, 0.1) !important;
+    border-color: #ff00d9 !important;       
+
+    a { color: #ff00d9 !important; }
+
+    &:hover {
+        opacity: 1;
+        border-color: #ff00d9 !important;
+        a { color: #ff00d9 !important; }
+    }
+}
+  }
+}

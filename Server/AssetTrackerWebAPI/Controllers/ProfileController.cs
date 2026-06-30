@@ -10,21 +10,21 @@ namespace AssetTrackerWebAPI.Controllers
     {
        private readonly ProfileService _profileService;
 
-       public ProfileController(ProfileService profileService)
-       {
-        _profileService = profileService;
-        
-       } 
-        [HttpGet("{userId}")]
-        public async Task<ActionResult<Profile>> GetProfile(string userId)
-        {
-            var profile = await _profileService.GetProfileByUserId(userId);
-            if (profile == null)
+            public ProfileController(ProfileService profileService)
             {
-                return NotFound();
+                _profileService = profileService;
+                
+            } 
+            [HttpGet("{userId}")]
+            public async Task<ActionResult<Profile>> GetProfile(string userId)
+            {
+                var profile = await _profileService.GetProfileByUserId(userId);
+                if (profile == null)
+                {
+                    return NotFound();
+                }
+                return Ok(profile);
             }
-            return Ok(profile);
-        }
     }
     
 }

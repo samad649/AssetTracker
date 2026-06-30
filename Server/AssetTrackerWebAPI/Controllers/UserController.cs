@@ -9,12 +9,14 @@ namespace AssetTrackerWebAPI.Controllers
     public class UserController: ControllerBase
     {
         private readonly UserService _userService;
+        private readonly ProfileService _profileService;
         private readonly MockDataService _mockDataService;
 
 
-        public UserController(UserService userService, MockDataService mockDataService)
+        public UserController(UserService userService, ProfileService profileService, MockDataService mockDataService)
         {
             _userService = userService;
+            _profileService = profileService;
             _mockDataService = mockDataService;
         }
         [HttpGet("{userId}")]
@@ -44,5 +46,30 @@ namespace AssetTrackerWebAPI.Controllers
         }
         return Ok(userId);
         }
-    }
+        [AllowAnonymous]
+        [HttpPost("CreateUser")]
+        public async Task<ActionResult> CreateUser([FromBody] UserRequest userRequest)
+        {
+            var profile = new Profile
+            {
+                profileId = Guid.NewGuid().ToString(),
+                firstName = userRequest.firstName,
+                lastName = userRequest.lastName
+            };
+            await _profileService.CreateProfile(profile);
+
+            var user = new User
+            {
+                userId = Guid.NewGuid().ToString(),
+                profileId = profile.profileId,
+                email = userRequest.email,
+                username = userRequest.username,
+                password = userRequest.password
+            };
+        
+            await _userService.CreateUser(user);
+            return Ok();
+        
+        }
+}
 }

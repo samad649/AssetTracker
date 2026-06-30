@@ -1,15 +1,20 @@
-<h1>Accounts:</h1>
 <ng-container *ngIf="accounts$ | async as accounts">
+  <div class="card-container">
+        <div *ngFor="let account of accounts" class="card-wrapper">
+          <nz-card [nzTitle]="account.institutionName" [nzExtra]="extraTemplate">
+                <div class="card-row">
+                  <span class="type">{{account.subtype }}</span>
+                  <span class="amount">${{account.availableBalance}}</span>
+                </div>
+          </nz-card>
+          <ng-template #extraTemplate>
+            <a *ngIf="account.mask">&bull;&bull;&bull;&bull;{{ account.mask }}</a>
+          </ng-template>
+        </div>
+            <div class="add-account" (click)="connectBank()">
+            <nz-icon class="plus-icon" nzType="plus" nzTheme="outline" />            
+            </div>
+  </div>
 </ng-container>
-<div class="card-container">
-<nz-card nzTitle="Chase" [nzExtra]="extraTemplate">
-    <div class="card-row">
-      <span class="type">Checking</span>
-      <span class="amount">$13,639</span>
-    </div>
-    </nz-card>
-    <ng-template #extraTemplate>
-      <a>&bull;&bull;&bull;&bull;6362</a>
-    </ng-template>
-</div>
+
 

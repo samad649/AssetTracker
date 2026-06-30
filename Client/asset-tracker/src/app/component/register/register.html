@@ -1,0 +1,42 @@
+  <div class="register-container">
+    <h1 class="register-title">Member Register</h1>
+    <form nz-form nzLayout="vertical" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+      
+            <nz-form-item>
+        <nz-form-control>
+            <input formControlName="firstName" nz-input placeholder="First Name" />
+        </nz-form-control>
+      </nz-form-item>
+
+            <nz-form-item>
+        <nz-form-control>
+            <input formControlName="lastName" nz-input placeholder="Last Name" />
+        </nz-form-control>
+      </nz-form-item>
+
+        <nz-form-item>
+        <nz-form-control>
+            <input formControlName="email" nz-input placeholder="Email" />
+        </nz-form-control>
+      </nz-form-item>
+
+    <nz-form-item>
+        <nz-form-control>
+          <input formControlName="username" nz-input placeholder="Username" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control>
+            <input formControlName="password" nz-input placeholder="Password" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-control>
+            <button nz-button nzType="primary" nzBlock type="submit">Register</button>
+        </nz-form-control>
+      </nz-form-item>
+      
+    </form>
+  </div>

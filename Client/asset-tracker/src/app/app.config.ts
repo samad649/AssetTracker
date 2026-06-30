@@ -1,7 +1,7 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { UserOutline, InstagramOutline, GithubOutline, LinkedinOutline, DiscordOutline, PauseCircleOutline } from '@ant-design/icons-angular/icons';
+import { UserOutline, InstagramOutline, GithubOutline, LinkedinOutline, DiscordOutline, PauseCircleOutline, PlusSquareOutline, PlusOutline } from '@ant-design/icons-angular/icons';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -16,6 +16,6 @@ export const appConfig: ApplicationConfig = {
 ),
     provideAnimationsAsync(),
     importProvidersFrom(
-      NzIconModule.forRoot([UserOutline, InstagramOutline, GithubOutline, LinkedinOutline, DiscordOutline, PauseCircleOutline]))
+      NzIconModule.forRoot([UserOutline, InstagramOutline, GithubOutline, LinkedinOutline, DiscordOutline, PauseCircleOutline,PlusOutline]))
   ]
 };
