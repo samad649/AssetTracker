@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError, BehaviorSubject } from 'rxjs';
 import { Profile } from '../models/profile';
 import { Account } from '../models/account';
 
@@ -11,9 +11,10 @@ export class ProfileService {
   private apiUrl = 'https://localhost:7141/api/Profile';
   private accountApiUrl = 'https://localhost:7141/api/Account';
 
-  constructor(private http: HttpClient) { }
+  private accountsSubject = new BehaviorSubject<Account[]>([]);  // ✅ add this
+  accounts$ = this.accountsSubject.asObservable();               // ✅ and this
 
- 
+  constructor(private http: HttpClient) { }
 
   getProfile(id: string): Observable<Profile> {
     return this.http.get<Profile>(`${this.apiUrl}/${id}`).pipe(
@@ -25,6 +26,13 @@ export class ProfileService {
     return this.http.get<Account[]>(`${this.accountApiUrl}/All`).pipe(
       catchError(this.handleError('getAccounts'))
     );
+  }
+
+  // ✅ add this
+  refreshAccounts(): void {
+    this.getAccounts().subscribe(accounts => {
+      this.accountsSubject.next(accounts);
+    });
   }
 
   private handleError(operation: string) {

@@ -1,20 +1,36 @@
 <ng-container *ngIf="accounts$ | async as accounts">
   <div class="card-container">
-        <div *ngFor="let account of accounts" class="card-wrapper">
-          <nz-card [nzTitle]="account.institutionName" [nzExtra]="extraTemplate">
-                <div class="card-row">
-                  <span class="type">{{account.subtype }}</span>
-                  <span class="amount">${{account.availableBalance}}</span>
-                </div>
-          </nz-card>
-          <ng-template #extraTemplate>
-            <a *ngIf="account.mask">&bull;&bull;&bull;&bull;{{ account.mask }}</a>
-          </ng-template>
+    <div *ngFor="let account of accounts" class="card-wrapper" (click)="openModal(account)"> 
+      <nz-card [nzTitle]="account.institutionName" [nzExtra]="extraTemplate">
+        <div class="card-row">
+          <span class="type">{{ account.subtype }}</span>
+          <span class="amount">${{ account.availableBalance }}</span>
         </div>
-            <div class="add-account" (click)="connectBank()">
-            <nz-icon class="plus-icon" nzType="plus" nzTheme="outline" />            
-            </div>
+      </nz-card>
+      <ng-template #extraTemplate>
+        <a *ngIf="account.mask">&bull;&bull;&bull;&bull;{{ account.mask }}</a>
+      </ng-template>
+    </div>
+
+    <div class="add-account" (click)="connectBank()">
+      <nz-icon class="plus-icon" nzType="plus" nzTheme="outline" />
+    </div>
   </div>
 </ng-container>
 
+<!-- Modal -->
+<nz-modal
+  [(nzVisible)]="isModalVisible"
+  nzTitle="Account Options"
+  (nzOnCancel)="closeModal()"
+  (nzOnOk)="removeAccount()"
+  nzOkText="Remove Account"
+  nzOkDanger
+>
+  <ng-container *nzModalContent>
+    <p><strong>{{ selectedAccount?.institutionName }}</strong></p>
+    <p>••••{{ selectedAccount?.mask }}</p>
+    <p>Are you sure you want to remove this account?</p>
+  </ng-container>
+</nz-modal>
 

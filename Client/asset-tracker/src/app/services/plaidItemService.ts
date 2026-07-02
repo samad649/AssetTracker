@@ -9,14 +9,15 @@ export class PlaidItemService {
 
     constructor(private http: HttpClient) {}
 
-    addPlaidItem(publicToken: string, metadata: any) {
-        return this.http.post<any>(
-        `${this.apiUrl}/addPlaidItem`,
-        { 
-        publicToken: publicToken, 
-        institutionId: metadata.institution.institution_id,
-        institution: metadata.institution.name 
-        }
-        );
-    }
+      addPlaidItem(publicToken: string, metadata: any) {
+          return this.http.post(
+              `${this.apiUrl}/addPlaidItem`,
+              { 
+                  publicToken: publicToken, 
+                  institutionId: metadata.institution.institution_id,
+                  institution: metadata.institution.name 
+              },
+              { responseType: 'text' }  
+          );
+      }
   }

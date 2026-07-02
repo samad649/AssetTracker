@@ -50,35 +50,37 @@
     ::ng-deep .ant-card-extra *{
         color: aliceblue !important; 
         }
-        .add-account{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #1fe5ff !important;
-            border-radius: 12px !important;
-            width: 320px !important;
-            box-shadow: 0 0 20px #1fe5ff !important;
+        .add-account {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #1fe5ff !important;
+    border-radius: 12px !important;
+    width: 320px !important;
+    height: 195px;          // ✅ fixed height to match card
+    box-shadow: 0 0 20px #1fe5ff !important;
 
-            .plus-icon{
-                font-size: 5rem;
-                color: rgb(32, 151, 255) !important;
-                    ::ng-deep svg {
-                        width: 1em;        // inherits font-size from parent
-                        height: 1em;
-                        fill: rgba(7, 187, 190, 0.448) !important;
-                    }
-            }
-                &:hover{
-                    cursor: pointer;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 0 30px #1fe5ff !important;
-                    transform: translateY(-15px);
+    .plus-icon {
+        font-size: 2.5rem;
 
-                    .plus-icon{
-                        transition: all 0.3s ease;
-                        scale: 1.3;
-                    }
-                }
+        ::ng-deep svg {
+            width: 1.2em;
+            height: 1.2em;
+            fill: rgb(94, 201, 203) !important;
         }
+    }
+
+    &:hover {
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 0 30px #1fe5ff !important;
+        transform: translateY(-15px);
+
+        .plus-icon {
+            transition: all 0.3s ease;
+            scale: 1.3;
+        }
+    }
+}
 
 }

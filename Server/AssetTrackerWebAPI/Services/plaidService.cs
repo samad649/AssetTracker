@@ -5,7 +5,6 @@ using Going.Plaid.Item;
 using Going.Plaid.Accounts;
 using Going.Plaid.Transactions;
 using Amazon.DynamoDBv2.DataModel;
-
 namespace AssetTrackerWebAPI.Services
 {
     public class plaidService
@@ -20,7 +19,49 @@ namespace AssetTrackerWebAPI.Services
             _dynamoDBContext = dynamoDBContext;
             _plaidItemService = plaidItemService;
         }
+        public async Task RemoveItem(string profileId, string itemId)
+        {
+            var plaidItem = await _plaidItemService.GetPlaidItem(profileId, itemId);
 
+            if (plaidItem == null){throw new ArgumentException("PlaidItem not found");}
+                
+            if (string.IsNullOrEmpty(plaidItem.accessToken)){throw new ArgumentException("Access token not found for this item");}
+
+             // 1. Remove from Plaid first
+            var response = await _plaidClient.ItemRemoveAsync(new ItemRemoveRequest
+            {
+                AccessToken = plaidItem.accessToken
+            });
+
+            if (response.Error != null)
+                throw new Exception($"Plaid error: {response.Error.ErrorMessage}");
+
+            Console.WriteLine("Item removed from Plaid");
+
+            // 2. Remove the PlaidItem
+            await _dynamoDBContext.DeleteAsync<PlaidItem>(profileId, itemId);
+
+            // 3. Remove associated accounts
+            var accounts = await _dynamoDBContext.QueryAsync<Account>(profileId)
+                .GetRemainingAsync();
+            
+            var itemAccounts = accounts.Where(a => a.itemId == itemId).ToList();
+            foreach (var account in itemAccounts)
+            {
+                    if (string.IsNullOrEmpty(account.accountId))
+                    continue;
+                // 4. Remove transactions for each account
+                var transactions = await _dynamoDBContext.QueryAsync<Transaction>(account.accountId)
+                    .GetRemainingAsync();
+                
+                foreach (var transaction in transactions)
+                    await _dynamoDBContext.DeleteAsync<Transaction>(transaction.accountId, transaction.transactionId);
+
+                await _dynamoDBContext.DeleteAsync<Account>(profileId, account.accountId);
+            }
+
+            Console.WriteLine($"Removed item, {itemAccounts.Count} accounts and associated transactions");
+        }
         public async Task<string> CreateLinkToken(string userId)
         {
         Console.WriteLine($"=== CreateLinkToken called for userId: {userId} ===");
@@ -32,7 +73,7 @@ namespace AssetTrackerWebAPI.Services
                 ClientUserId = userId
             },
             ClientName = "AssetTracker",
-            Products = new List<Products> { Products.Auth, Products.Transactions },
+            Products = new List<Products> { Products.Transactions },
             CountryCodes = new List<CountryCode> { CountryCode.Us },
             Language = Language.English,
         };
@@ -111,6 +152,13 @@ namespace AssetTrackerWebAPI.Services
                 });
             if (response.Error != null){throw new Exception($"Plaid error: {response.Error.ErrorMessage}");}
             Console.WriteLine(response);
+            // ✅ If not ready, wait and retry
+            if (response.TransactionsUpdateStatus == TransactionsUpdateStatus.NotReady)
+            {
+                Console.WriteLine("Transactions not ready yet, retrying in 5 seconds...");
+                await Task.Delay(5000);
+                continue;
+            }
             transactions.AddRange(response.Added.Concat(response.Modified).Select(MapTransaction));
             removedList.AddRange(response.Removed.Select(r => (r.AccountId!, r.TransactionId!)));
 

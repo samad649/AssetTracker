@@ -35,13 +35,15 @@ private fb = inject(NonNullableFormBuilder);
   constructor(private userService: UserService, private router: Router) {}
   
       submitForm(): void {
-      
-        if (this.validateForm.invalid) {
+      console.log('submit', this.validateForm.value);
+
+      if (this.validateForm.invalid) {
           Object.values(this.validateForm.controls).forEach(control => {
-            control.markAsTouched();
+              control.markAsTouched();
+              control.updateValueAndValidity();
           });
-          return;
-        }
+          return;  // ✅ shows errors, keeps values so user can fix them
+      }
       const userPayload = this.validateForm.value;   
 
       this.userService.registerUser(userPayload).subscribe({

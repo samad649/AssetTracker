@@ -8,25 +8,28 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { authService } from '../../services/authService';
 import { PlaidService } from '../../services/plaidService';
+import { NzModalModule } from 'ng-zorro-antd/modal';
 @Component({
   selector: 'app-account-card',
-  imports: [CommonModule, NzCardModule, NzIconModule],
+  imports: [CommonModule, NzCardModule, NzIconModule, NzModalModule],
   templateUrl: './account-card.html',
   styleUrl: './account-card.scss'
 })
 export class AccountCard implements OnInit {
   profile: ProfileModel | null = null;
   accounts$!: Observable<AccountModel[]>;
-
+  selectedAccount: any = null;
+  isModalVisible = false;
   constructor(
     private profileService: ProfileService,
     private authService: authService,
     private plaidService: PlaidService
   ) {}
 
-  ngOnInit(): void {
-    this.accounts$ = this.profileService.getAccounts();
-}
+  ngOnInit() {
+      this.profileService.refreshAccounts();  
+      this.accounts$ = this.profileService.accounts$;  
+  }
 
 connectBank() {
    const userId = this.authService.getUserId();
@@ -39,5 +42,27 @@ connectBank() {
     error: (err) => console.error(err)
   });
 }
+openModal(account: any) {
+  console.log('Opening modal for account:', account);
+    this.selectedAccount = account;
+    this.isModalVisible = true;
+}
 
+closeModal() {
+    this.isModalVisible = false;
+    this.selectedAccount = null;
+}
+
+    // After deletion
+    removeAccount() {
+        if (this.selectedAccount) {
+            this.plaidService.DeleteItem(this.selectedAccount.itemId).subscribe({
+                next: () => {
+                    this.closeModal();
+                    this.profileService.refreshAccounts();  
+                },
+                error: (err) => console.error('Error:', err.error)
+            });
+        }
+    }
 }

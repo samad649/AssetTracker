@@ -5,9 +5,11 @@ import { UserOutline, InstagramOutline, GithubOutline, LinkedinOutline, DiscordO
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideNzI18n, en_US } from 'ng-zorro-antd/i18n';
 import { authInterceptor } from './interceptors/authInterceptor';
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideNzI18n(en_US),
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
