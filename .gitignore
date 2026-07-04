@@ -26,7 +26,7 @@ ScaffoldingReadMe.txt
 *.nupkg
 *.snupkg
 appsettings.Development.json
-
+Server/AssetTrackerWebAPI/appsettings.Development.json
 # ==== ASP.NET Core ====
 # Keep appsettings*.json committed but NEVER put secrets in them
 # Use dotnet user-secrets or env vars for secrets
