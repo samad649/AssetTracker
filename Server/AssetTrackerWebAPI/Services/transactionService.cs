@@ -26,5 +26,6 @@ namespace AssetTrackerWebAPI.Services
             var transactions = await _dynamoDBContext.QueryAsync<Transaction>(accountId).GetRemainingAsync();
             return transactions;
         }
+        
     }  
 }

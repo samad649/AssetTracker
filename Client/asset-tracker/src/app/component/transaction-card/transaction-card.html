@@ -6,14 +6,35 @@
             <th>Amount</th>
             <th>Date</th>
             <th>Category</th>
+            <th>Detailed Category</th>
+            <th>Icon</th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let transaction of transactionTable.data">  <!-- ✅ not transactions -->
-            <td>{{ transaction.merchantName || transaction.name }}</td>
+        <tr *ngFor="let transaction of transactionTable.data">
+            <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img 
+                        *ngIf="transaction.logoUrl" 
+                        [src]="transaction.logoUrl" 
+                        width="40" 
+                        height="40"
+                        style="border-radius: 50%;"
+                    />
+                    {{ transaction.merchantName || transaction.name }}
+                </div>
+            </td>
             <td>{{ transaction.amount | currency }}</td>
             <td>{{ transaction.date | date }}</td>
             <td>{{ transaction.categoryPrimary || "N/A" }}</td>
+            <td>{{ transaction.categoryDetailed || "N/A" }}</td>
+            <td><img 
+                        *ngIf="transaction.categoryIconUrl" 
+                        [src]="transaction.categoryIconUrl" 
+                        width="40" 
+                        height="40"
+                        style="border-radius: 50%;"
+                    /></td>
         </tr>
     </tbody>
 </nz-table>

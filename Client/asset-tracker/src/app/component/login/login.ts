@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 import { OnInit } from '@angular/core';
 import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
 import { RouterModule } from '@angular/router';
-
+import { UserService } from '../../services/userService';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -36,7 +36,7 @@ export class Login implements OnInit {
     password: this.fb.control('', [Validators.required])
   });
 
-  constructor(private sharedService: SharedService, private authService: authService, private router: Router) {
+  constructor(private sharedService: SharedService, private authService: authService, private router: Router, private userService: UserService) {
     this.authService.isLoggedIn$.subscribe(loggedIn => {
         this.isLoggedIn = loggedIn;
     });  
@@ -46,7 +46,24 @@ export class Login implements OnInit {
       this.UserId = this.authService.getUserId();
       this.profile$ = this.sharedService.selectedProfile$;
   }
+    deleteAccount() {
+          const userId = this.authService.getUserId();
+          if (!userId) {
+              console.error('No user ID found. Cannot delete account.');
+              return;
+          }
 
+          this.userService.deleteUser(userId).subscribe({
+              next: () => {
+                  console.log('Account deleted successfully');
+                  this.authService.logout();          
+                  this.router.navigate(['/login']);  
+              },
+              error: (err) => {
+                  console.error('Failed to delete account', err);
+              }
+          });
+      }
     submitForm() {
     if (this.validateForm.invalid) {
       // mark all fields as touched so errors show

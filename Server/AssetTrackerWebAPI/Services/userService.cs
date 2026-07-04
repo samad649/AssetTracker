@@ -27,6 +27,14 @@ namespace AssetTrackerWebAPI.Services
         {
              await _dynamoDBContext.SaveAsync(user);
         }
+        public async Task UpdateUser(User user)
+        {
+            await _dynamoDBContext.SaveAsync(user);
+        }
+        public async Task DeleteUser(string userId)
+        {
+            await _dynamoDBContext.DeleteAsync<User>(userId);   
+        }
         
     }
 }

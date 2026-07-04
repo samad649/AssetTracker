@@ -8,16 +8,17 @@ using System.Text;
 using Going.Plaid;
 using Microsoft.OpenApi.Models;
 
-var dynamoConfig = new AmazonDynamoDBConfig
-{
-    ServiceURL = "http://localhost:8000",
-    AuthenticationRegion = "us-east-1"
-};
 
-var dynamoClient = new AmazonDynamoDBClient("dummy", "dummy", dynamoConfig);
 
 // Create a builder for the web application
 var builder = WebApplication.CreateBuilder(args);
+
+var dynamoClient = new AmazonDynamoDBClient(
+    builder.Configuration["AWS:AccessKey"],
+    builder.Configuration["AWS:SecretKey"],
+    Amazon.RegionEndpoint.USEast1
+);
+
 // Enable API Explorer
 builder.Services.AddEndpointsApiExplorer();
 // Enable Swagger

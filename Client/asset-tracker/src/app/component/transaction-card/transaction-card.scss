@@ -1,7 +1,7 @@
 .transaction-table{
     margin: 0 auto;
     padding: 0;
-    width: 60%;
+    width: 85%;
     margin-top: 50px;
   ::ng-deep {
     // Table background
@@ -25,7 +25,7 @@
     // Rows
     .ant-table-tbody > tr > td {
       color: aliceblue !important;
-      border-bottom: 0px solid rgba(31, 229, 255, 0.1) !important;
+      border-bottom: 1px solid rgba(105, 240, 240, 0.316) !important;
     }
 
     // Row hover

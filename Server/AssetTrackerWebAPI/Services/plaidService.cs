@@ -4,6 +4,7 @@ using Going.Plaid.Entity;
 using Going.Plaid.Item;
 using Going.Plaid.Accounts;
 using Going.Plaid.Transactions;
+
 using Amazon.DynamoDBv2.DataModel;
 namespace AssetTrackerWebAPI.Services
 {
@@ -73,7 +74,7 @@ namespace AssetTrackerWebAPI.Services
                 ClientUserId = userId
             },
             ClientName = "AssetTracker",
-            Products = new List<Products> { Products.Transactions },
+            Products = new List<Products> { Products.Transactions, Products.Liabilities},
             CountryCodes = new List<CountryCode> { CountryCode.Us },
             Language = Language.English,
         };
@@ -184,7 +185,6 @@ namespace AssetTrackerWebAPI.Services
             {
                 accountId = t.AccountId!,
                 transactionId = t.TransactionId!,
-                name = string.IsNullOrWhiteSpace(t.Name) ? null : t.Name,
                 amount = t.Amount.HasValue ? (double)Math.Round(t.Amount.Value, 2) : null,
                 ISOCurrencyCode = string.IsNullOrWhiteSpace(t.IsoCurrencyCode) ? null : t.IsoCurrencyCode,
                 merchantName = string.IsNullOrWhiteSpace(t.MerchantName) ? null : t.MerchantName,

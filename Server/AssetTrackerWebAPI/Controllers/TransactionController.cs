@@ -61,6 +61,7 @@ namespace AssetTrackerWebAPI.Controllers
             await _plaidService.storeTransactionData(item.accessToken, item.itemId, profileId);
             return Ok("Successfully synced transactions for the specified item");
         }
+        
     }
 
 }
