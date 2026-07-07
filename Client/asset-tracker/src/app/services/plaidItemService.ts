@@ -20,4 +20,22 @@ export class PlaidItemService {
               { responseType: 'text' }  
           );
       }
-  }
+            sync(itemId: string) {
+            return this.http.post(
+                `${this.apiUrl}/sync/${itemId}`, 
+                {},
+                { responseType: 'text' }
+            );
+        }
+      resetSync(itemId: string) {
+            return this.http.post(
+                `${this.apiUrl}/reset-sync/${itemId}`, 
+                {},
+                { responseType: 'text' }
+            );
+        }
+        getItemsByProfile(profileId: string) {
+            return this.http.get<any[]>(`${this.apiUrl}/${profileId}`);
+        }
+}
+  

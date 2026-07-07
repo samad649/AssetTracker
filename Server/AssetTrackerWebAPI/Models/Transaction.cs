@@ -13,6 +13,7 @@ public class Transaction
     // --- Core ---
     public double? amount { get; set; }
     public string? ISOCurrencyCode { get; set; }        // "USD"
+    public string? rawName { get; set; }             // "WALMART #1234"
     public string? merchantName { get; set; }           // Enriched: "Walmart"
     public string? merchantEntityId { get; set; }       // Stable ID — useful for grouping spend by merchant
     public string? logoUrl { get; set; }                

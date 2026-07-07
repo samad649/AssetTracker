@@ -10,17 +10,18 @@ namespace AssetTrackerWebAPI.Services
     {
         private readonly IConfiguration _config;
         private readonly IDynamoDBContext _dynamoDBContext;
+        private readonly ProfileService _profileService;
 
-        public AuthService(IConfiguration config, IDynamoDBContext dynamoDBContext)
+        public AuthService(IConfiguration config, IDynamoDBContext dynamoDBContext, ProfileService profileService)
         {
             _config = config;
             _dynamoDBContext = dynamoDBContext;
+            _profileService = profileService;
         }
 
         public string GenerateToken(User user)
         {
             var secretKey = _config["Jwt:SecretKey"] ?? throw new Exception("JWT secret key not configured");
-            
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
             var token = new JwtSecurityToken(
@@ -52,6 +53,18 @@ namespace AssetTrackerWebAPI.Services
             if (user.password != password) return null;
 
             return user;
+        }
+
+        // ✅ takes ClaimsPrincipal as parameter instead of using controller's User
+        public async Task<string> GetProfileId(ClaimsPrincipal principal)
+        {
+            var userId = principal.FindFirst("userId")?.Value;
+            if (userId == null) throw new UnauthorizedAccessException("User not authenticated");
+
+            var profile = await _profileService.GetProfileByUserId(userId);
+            if (profile == null) throw new KeyNotFoundException("Profile not found");
+
+            return profile.profileId;
         }
     }
 }

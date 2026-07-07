@@ -1,3 +1,35 @@
+<div class="menu">
+    <button nz-button nzType="primary" nz-dropdown [nzDropdownMenu]="syncMenu" nzTrigger="click">
+        Sync <span nz-icon nzType="down"></span>
+    </button>
+
+    <button nz-button nzType="primary" nz-dropdown [nzDropdownMenu]="resetMenu" nzTrigger="click">
+        Reset Sync <span nz-icon nzType="down"></span>
+    </button>
+
+    <!-- Sync Menu -->
+    <nz-dropdown-menu #syncMenu="nzDropdownMenu">
+        <ul nz-menu>
+            <li nz-menu-item 
+                *ngFor="let item of items" 
+                (click)="syncTransactions(item.itemId)">
+                {{ item.institution }}
+            </li>
+        </ul>
+    </nz-dropdown-menu>
+
+    <!-- Reset Sync Menu -->
+    <nz-dropdown-menu #resetMenu="nzDropdownMenu">
+        <ul nz-menu>
+            <li nz-menu-item 
+                *ngFor="let item of items"
+                nzDanger
+                (click)="resetSync(item.itemId)">
+                {{ item.institution }}
+            </li>
+        </ul>
+    </nz-dropdown-menu>
+</div>
 <div class="transaction-table">
 <nz-table #transactionTable [nzPageSize]="25" [nzScroll]="{ y: '500px' }" [nzData]="transactions">
     <thead>
@@ -21,7 +53,7 @@
                         height="40"
                         style="border-radius: 50%;"
                     />
-                    {{ transaction.merchantName || transaction.name }}
+                    {{ transaction.merchantName || transaction.rawName }}
                 </div>
             </td>
             <td>{{ transaction.amount | currency }}</td>
@@ -38,5 +70,8 @@
         </tr>
     </tbody>
 </nz-table>
+</div>
+<div>
+    Total Transactions: {{ transactions.length }}
 </div>
 

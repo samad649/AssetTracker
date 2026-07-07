@@ -30,38 +30,7 @@ namespace AssetTrackerWebAPI.Controllers
         {
             var transactions = await _transactionService.GetTransactionsByAccount(accountId);
             return Ok(transactions);
-        }
-        [HttpPost("sync/{profileId}")]
-        public async Task<IActionResult> SyncAllTransactions(string profileId)
-        {
-            var items = await _plaidItemService.GetItemsByProfile(profileId);
-            foreach (var item in items)
-            {
-                    if (item.accessToken == null)
-                        {
-                            Console.WriteLine($"No access token for itemId: {item.itemId}");
-                            continue;
-                        }
-                try 
-                    {await _plaidService.storeTransactionData(item.accessToken, item.itemId, profileId);}
-                catch (Exception ex)
-                    {Console.WriteLine($"Failed to sync itemId: {item.itemId} - {ex.Message}");}           
-            }
-            return Ok("Successfully synced transactions for all items");
-        }
-        
-        [HttpPost("sync/{profileId}/{itemId}")]
-        public async Task<IActionResult> SyncItemTransactions(string profileId, string itemId)
-        {
-            var item = await _plaidItemService.GetPlaidItem(profileId, itemId);
-            if (item == null)
-            {
-                return NotFound($"No Plaid item found for profileId: {profileId} and itemId: {itemId}");
-            }
-            await _plaidService.storeTransactionData(item.accessToken, item.itemId, profileId);
-            return Ok("Successfully synced transactions for the specified item");
-        }
-        
+        }        
     }
 
 }

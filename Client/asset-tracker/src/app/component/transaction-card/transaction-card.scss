@@ -1,3 +1,17 @@
+.menu{
+   .ant-btn-primary{
+    background: transparent !important;
+    border-color: rgba(31, 229, 255, 0.3) !important;
+    color: aliceblue !important;
+
+    &:hover {
+        background: rgba(31, 229, 255, 0.1) !important;
+        border-color: rgba(31, 229, 255, 0.3) !important;
+        color: #00e9f9 !important;
+    }
+}
+}
+
 .transaction-table{
     margin: 0 auto;
     padding: 0;

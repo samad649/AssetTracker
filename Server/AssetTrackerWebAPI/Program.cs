@@ -12,6 +12,13 @@ using Microsoft.OpenApi.Models;
 // Create a builder for the web application
 var builder = WebApplication.CreateBuilder(args);
 
+var plaidEnvironment = builder.Configuration["Plaid:Environment"];
+var plaidSecret = plaidEnvironment == "sandbox"
+    ? builder.Configuration["Plaid:SandboxSecret"]
+    : builder.Configuration["Plaid:Secret"];
+
+builder.Configuration["Plaid:Secret"] = plaidSecret;
+
 var dynamoClient = new AmazonDynamoDBClient(
     builder.Configuration["AWS:AccessKey"],
     builder.Configuration["AWS:SecretKey"],

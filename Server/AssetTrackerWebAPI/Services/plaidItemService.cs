@@ -9,6 +9,7 @@ namespace AssetTrackerWebAPI.Services
         {
             _dynamoDBContext = dynamoDBContext;
         }
+
         public async Task<IEnumerable<PlaidItem>> GetPlaidItems(string profileId)
         {
            var plaidItems = await _dynamoDBContext.QueryAsync<PlaidItem>(profileId).GetRemainingAsync();

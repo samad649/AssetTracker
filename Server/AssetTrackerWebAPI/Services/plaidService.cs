@@ -4,6 +4,8 @@ using Going.Plaid.Entity;
 using Going.Plaid.Item;
 using Going.Plaid.Accounts;
 using Going.Plaid.Transactions;
+using System.Text.Json;
+
 
 using Amazon.DynamoDBv2.DataModel;
 namespace AssetTrackerWebAPI.Services
@@ -74,9 +76,21 @@ namespace AssetTrackerWebAPI.Services
                 ClientUserId = userId
             },
             ClientName = "AssetTracker",
-            Products = new List<Products> { Products.Transactions, Products.Liabilities},
+            Products = new List<Products>
+            {
+                Products.Transactions
+            },
+            AdditionalConsentedProducts = new List<Products>
+            {
+                Products.Liabilities,
+                Products.Investments
+            },
             CountryCodes = new List<CountryCode> { CountryCode.Us },
             Language = Language.English,
+                Transactions = new LinkTokenTransactions
+                {
+                    DaysRequested = 730  
+                }
         };
 
         var response = await _plaidClient.LinkTokenCreateAsync(request);
@@ -134,9 +148,21 @@ namespace AssetTrackerWebAPI.Services
             }
 
         }
+        public async Task SyncTransactions(string accessToken, string itemId, string profileId)
+        {
+            await storeTransactionData(accessToken, itemId, profileId);
+        }
+
+        // Full reset — wipes cursor and re-fetches everything
+        public async Task ResetAndSyncTransactions(string accessToken, string itemId, string profileId)
+        {
+            await ResetCursor(profileId, itemId);
+            await storeTransactionData(accessToken, itemId, profileId);
+        }
         // Store transaction data for all accounts linked to a Plaid item
         public async Task storeTransactionData(string accessToken, string itemId, string profileId)
         {
+
             List<Transaction> transactions = new List<Transaction>();
             var removedList = new List<(string AccountId, string TransactionId)>();
 
@@ -150,10 +176,23 @@ namespace AssetTrackerWebAPI.Services
                     AccessToken = accessToken,
                     Cursor = cursor,
                     Count = 500,
+                    Options = new TransactionsSyncRequestOptions
+                    {
+                        IncludeOriginalDescription = true,
+                    }
                 });
             if (response.Error != null){throw new Exception($"Plaid error: {response.Error.ErrorMessage}");}
-            Console.WriteLine(response);
-            // ✅ If not ready, wait and retry
+
+            foreach (var transaction in response.Added.Take(5))
+{
+                Console.WriteLine(JsonSerializer.Serialize(
+                    transaction,
+                    new JsonSerializerOptions
+                    {
+                        WriteIndented = true
+                    }));
+            }
+
             if (response.TransactionsUpdateStatus == TransactionsUpdateStatus.NotReady)
             {
                 Console.WriteLine("Transactions not ready yet, retrying in 5 seconds...");
@@ -170,6 +209,8 @@ namespace AssetTrackerWebAPI.Services
             // Save transactions to DynamoDB
             foreach (var transaction in transactions)
             {
+                //Console.WriteLine($"Saving transaction: {transaction.transactionId} for account: {transaction.accountId}");
+                //Console.WriteLine(transaction);
                 await _dynamoDBContext.SaveAsync(transaction);
             }
             // Remove deleted transactions from DynamoDB
@@ -179,12 +220,17 @@ namespace AssetTrackerWebAPI.Services
             }
 
         }
+        private async Task ResetCursor(string profileId, string itemId)
+        {
+            await _plaidItemService.UpdateCursor(profileId, itemId, null);
+        }
         private Transaction MapTransaction(Going.Plaid.Entity.Transaction t)
         {
             return new Transaction
             {
                 accountId = t.AccountId!,
                 transactionId = t.TransactionId!,
+                rawName = string.IsNullOrWhiteSpace(t.OriginalDescription) ? null : t.OriginalDescription,
                 amount = t.Amount.HasValue ? (double)Math.Round(t.Amount.Value, 2) : null,
                 ISOCurrencyCode = string.IsNullOrWhiteSpace(t.IsoCurrencyCode) ? null : t.IsoCurrencyCode,
                 merchantName = string.IsNullOrWhiteSpace(t.MerchantName) ? null : t.MerchantName,

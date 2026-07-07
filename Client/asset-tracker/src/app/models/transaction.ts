@@ -5,7 +5,7 @@ export interface Transaction {
 
   // Core
   amount?: number | null;
-  name ?: string | null;
+  rawName ?: string | null;
   isoCurrencyCode?: string | null;
   merchantName?: string | null;
   merchantEntityId?: string | null;
