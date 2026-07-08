@@ -6,6 +6,11 @@
     row-gap: 20px;
     margin: 5%;
 
+    .card-wrapper {
+        display: flex;
+        justify-content: center;
+    }
+
     ::ng-deep .ant-card {
         width: 320px !important;
         background: rgba(7, 168, 255, 0.087) !important;
