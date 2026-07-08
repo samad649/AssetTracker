@@ -15,12 +15,14 @@ namespace AssetTrackerWebAPI.Services
         private readonly IDynamoDBContext _dynamoDBContext;
         private readonly PlaidClient _plaidClient;
         private readonly plaidItemService _plaidItemService;
+        private readonly accountService _accountService;
 
-        public plaidService(PlaidClient plaidClient, IDynamoDBContext dynamoDBContext, plaidItemService plaidItemService)
+        public plaidService(PlaidClient plaidClient, IDynamoDBContext dynamoDBContext, plaidItemService plaidItemService, accountService accountService)
         {
             _plaidClient = plaidClient;
             _dynamoDBContext = dynamoDBContext;
             _plaidItemService = plaidItemService;
+            _accountService = accountService;
         }
         public async Task RemoveItem(string profileId, string itemId)
         {
@@ -162,7 +164,19 @@ namespace AssetTrackerWebAPI.Services
         // Store transaction data for all accounts linked to a Plaid item
         public async Task storeTransactionData(string accessToken, string itemId, string profileId)
         {
+            var accounts = await _accountService.GetAccountsByItemId(itemId);
 
+            var eligibleAccountIds = accounts
+                .Where(a => a.type == "depository"
+                        || a.type == "credit"
+                        || (a.type == "loan" && (a.subtype == "student" || a.subtype == "mortgage")))
+                .Select(a => a.accountId)
+                .ToList();
+
+            if (!eligibleAccountIds.Any())
+            {
+                return;
+            }
             List<Transaction> transactions = new List<Transaction>();
             var removedList = new List<(string AccountId, string TransactionId)>();
 
